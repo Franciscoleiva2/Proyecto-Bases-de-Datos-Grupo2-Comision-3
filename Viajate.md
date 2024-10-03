@@ -1,48 +1,28 @@
-# Proyecto de Estudio!
-    
-**Estructura del documento principal:**
+# Proyecto de Estudio
 
-"Desarrollo de una aplicación de viajes compartidos. 'Viajate'
+### Desarrollo de una aplicación de viajes compartidos: `Viajate`
 
 **Asignatura**: Bases de Datos I (FaCENA-UNNE)
 
 **Integrantes**:
- Huici, Cesar Raul
- Barrios, Emilio Farid
- Leiva, Francisco Emanuel
- Gauto, Diego Ignacio
+- **Huici, Cesar Raúl**
+- **Barrios, Emilio Farid**
+- **Leiva, Francisco Emanuel**
+- **Gauto, Diego Ignacio**
 
 **Año**: 2024
 
-CAPÍTULO I: INTRODUCCIÓN
-Caso de estudio
-Este proyecto se enfoca en el desarrollo de Viajate, una aplicación para la organización de viajes compartidos. Su objetivo es conectar a personas que desean compartir trayectos en sus vehículos particulares, optimizando recursos y reduciendo costos y emisiones de carbono.
+---
 
-Definición o planteamiento del problema
-El problema identificado es la falta de una plataforma centralizada que permita a los usuarios coordinar viajes compartidos de manera eficiente y segura. Esto genera inconvenientes como altos costos de transporte, mayor congestión vehicular y un impacto ambiental significativo debido al uso individual de vehículos. Viajate busca resolver estos problemas proporcionando una solución que reduzca los costos de transporte y las emisiones de gases de efecto invernadero.
+## CAPÍTULO I: INTRODUCCIÓN
 
-Proyecto de Estudio
-Título del Proyecto:
-"Desarrollo de una aplicación de viajes compartidos: 'Viajate'"
+### Caso de estudio
 
-Asignatura:
-Bases de Datos I (FaCENA-UNNE)
+Este proyecto se enfoca en el desarrollo de **Viajate**, una aplicación para la organización de viajes compartidos. Su objetivo es conectar a personas que desean compartir trayectos en sus vehículos particulares, optimizando recursos y reduciendo costos y emisiones de carbono.
 
-Integrantes:
+### Definición o planteamiento del problema
 
-Huici, Cesar Raúl
-Barrios, Emilio Farid
-Leiva, Francisco Emanuel
-Gauto, Diego Ignacio
-Año:
-2024
-
-CAPÍTULO I: INTRODUCCIÓN
-Caso de estudio
-Este proyecto se enfoca en el desarrollo de Viajate, una aplicación para la organización de viajes compartidos. Su objetivo es conectar a personas que desean compartir trayectos en sus vehículos particulares, optimizando recursos y reduciendo costos y emisiones de carbono.
-
-Definición o planteamiento del problema
-El problema identificado es la falta de una plataforma centralizada que permita a los usuarios coordinar viajes compartidos de manera eficiente y segura. Esto genera inconvenientes como altos costos de transporte, mayor congestión vehicular y un impacto ambiental significativo debido al uso individual de vehículos. Viajate busca resolver estos problemas proporcionando una solución que reduzca los costos de transporte y las emisiones de gases de efecto invernadero.
+El problema identificado es la falta de una plataforma centralizada que permita a los usuarios coordinar viajes compartidos de manera eficiente y segura. Esto genera inconvenientes como altos costos de transporte, mayor congestión vehicular y un impacto ambiental significativo debido al uso individual de vehículos. **Viajate** busca resolver estos problemas proporcionando una solución que reduzca los costos de transporte y las emisiones de gases de efecto invernadero.
 
  CAPÍTULO II: MARCO CONCEPTUAL O REFERENCIAL
 Este capítulo presenta el marco conceptual que sustenta el desarrollo de la aplicación, basándose en las tecnologías actuales y en la importancia de la movilidad sostenible. Se exploran temas como:
@@ -67,13 +47,15 @@ Postman: Herramienta para probar y documentar las APIs desarrolladas.
 Cursos en línea y ChatGPT: Fuentes de conocimiento que permitieron adquirir las habilidades necesarias para el desarrollo del backend, complementando con ejemplos y asistencia técnica.
 Google Forms: Herramienta utilizada para realizar encuestas y recopilar datos de usuarios potenciales sobre sus necesidades de movilidad.
 
-CAPÍTULO IV: DESARROLLO DEL TEMA / PRESENTACIÓN DE RESULTADOS
-En este capítulo, se detallan los resultados obtenidos a lo largo del desarrollo del backend de Viajate. Se muestra cómo se implementaron las funcionalidades clave y cómo se estructuró la base de datos.
+---
+
+## CAPÍTULO IV: DESARROLLO DEL TEMA / PRESENTACIÓN DE RESULTADOS
+
+En este capítulo, se detallan los resultados obtenidos a lo largo del desarrollo del backend de **Viajate**. Se muestra cómo se implementaron las funcionalidades clave y cómo se estructuró la base de datos.
+
 ### Diagrama relacional
 
 [Haz clic aquí para ver el Diagrama relacional](https://drawsql.app/teams/viajate/diagrams/viajate-v1)
-
-![Diagrama](https://github.com/user-attachments/assets/d245c575-dd77-4e7b-b63b-2f9c4632e6d0)
 
 ### Diccionario de datos
 
