@@ -70,14 +70,15 @@ Google Forms: Herramienta utilizada para realizar encuestas y recopilar datos de
 
 CAPÍTULO IV: DESARROLLO DEL TEMA / PRESENTACIÓN DE RESULTADOS
 En este capítulo, se detallan los resultados obtenidos a lo largo del desarrollo del backend de Viajate. Se muestra cómo se implementaron las funcionalidades clave y cómo se estructuró la base de datos.
-
 ### Diagrama relacional
 
-https://drawsql.app/teams/viajate/diagrams/viajate-v1
+[Haz clic aquí para ver el Diagrama relacional](https://drawsql.app/teams/viajate/diagrams/viajate-v1)
+
+![Diagrama](https://github.com/user-attachments/assets/d245c575-dd77-4e7b-b63b-2f9c4632e6d0)
 
 ### Diccionario de datos
 
-https://github.com/Franciscoleiva2/Proyecto-Bases-de-Datos-Grupo2-Comision-3/blob/main/doc/diccionario_datos.pdf
+[Haz clic aquí para ver el Diccionario de datos](https://github.com/Franciscoleiva2/Proyecto-Bases-de-Datos-Grupo2-Comision-3/blob/main/doc/diccionario_datos.pdf)
 
 ### Desarrollo TEMA 1 "----"
 
