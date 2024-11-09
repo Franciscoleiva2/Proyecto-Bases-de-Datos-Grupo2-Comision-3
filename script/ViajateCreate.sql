@@ -1,8 +1,12 @@
-CReate DATAbase viajate
+CREATE DATABASE viajate1;
+GO
+
+USE viajate1;
+GO
 
 -- Tabla: usuarios
 CREATE TABLE usuarios (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY IDENTITY(1,1),
     nombre VARCHAR(255) NOT NULL,
     apellido VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
@@ -11,7 +15,7 @@ CREATE TABLE usuarios (
 
 -- Tabla: usuarios_detalle
 CREATE TABLE usuarios_detalle (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY IDENTITY(1,1),
     usuarios_id INT,
     telefono VARCHAR(20),
     genero VARCHAR(10),
@@ -22,7 +26,7 @@ CREATE TABLE usuarios_detalle (
 
 -- Tabla: comunidad
 CREATE TABLE comunidad (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY IDENTITY(1,1),
     nombre VARCHAR(255) NOT NULL,
     descripcion TEXT
 );
@@ -38,7 +42,7 @@ CREATE TABLE usuarios_comunidad (
 
 -- Tabla: viajes
 CREATE TABLE viajes (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY IDENTITY(1,1),
     usuarios_id INT,
     origen VARCHAR(255) NOT NULL,
     destino VARCHAR(255) NOT NULL,
@@ -50,7 +54,7 @@ CREATE TABLE viajes (
 
 -- Tabla: viajes_rutina (relación para viajes rutinarios compartidos)
 CREATE TABLE viajes_rutina (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY IDENTITY(1,1),
     viajes_id INT,
     comunidad_id INT,
     frecuencia VARCHAR(50) NOT NULL, -- Ejemplo: "Diario", "Semanal"
@@ -60,7 +64,7 @@ CREATE TABLE viajes_rutina (
 
 -- Tabla: viajes_detalle
 CREATE TABLE viajes_detalle (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY IDENTITY(1,1),
     viajes_id INT,
     asientos INT NOT NULL,
     descripcion TEXT,
@@ -73,7 +77,7 @@ CREATE TABLE viajes_detalle (
 
 -- Tabla: solicitudes
 CREATE TABLE solicitudes (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY IDENTITY(1,1),
     viajes_id INT,
     conductor_id INT,
     solicitante_id INT,
@@ -86,7 +90,7 @@ CREATE TABLE solicitudes (
 
 -- Tabla: combustibles
 CREATE TABLE combustibles (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY IDENTITY(1,1),
     nombre VARCHAR(255) NOT NULL,
     precio DECIMAL(10, 2) NOT NULL,
     descripcion TEXT
