@@ -1,4 +1,4 @@
-CREATE DATABASE viajate;
+-- CREATE DATABASE viajate;
 USE viajate;
 GO
 
@@ -39,7 +39,7 @@ CREATE TABLE usuarios_comunidades (
     fecha_union DATE NOT NULL DEFAULT GETDATE(),
     CONSTRAINT PK_usuarios_comunidades PRIMARY KEY (usuarios_id, comunidades_id),
     CONSTRAINT FK_usuarios_comunidades_usuarios FOREIGN KEY (usuarios_id) REFERENCES usuarios(id),
-    CONSTRAINT FK_usuarios_comunidades_comunidades FOREIGN KEY (comunidades_id) REFERENCES comunidad(id)
+    CONSTRAINT FK_usuarios_comunidades_comunidades FOREIGN KEY (comunidades_id) REFERENCES comunidades(id)
 );
 
 -- Tabla: tipos_vehiculos
@@ -131,3 +131,15 @@ CREATE TABLE valoraciones (
     CONSTRAINT FK_valoraciones_viajes FOREIGN KEY (viajes_id) REFERENCES viajes(id),
     CONSTRAINT FK_valoraciones_usuarios FOREIGN KEY (usuarios_id) REFERENCES usuarios(id),
 );
+
+CREATE TABLE roles (
+    id INT PRIMARY KEY,
+    rol VARCHAR(50) NOT NULL
+);
+
+ALTER TABLE usuarios_comunidades
+ADD roles_id INT;
+
+ALTER TABLE usuarios_comunidades
+ADD CONSTRAINT FK_usuarios_comunidades_roles
+FOREIGN KEY (roles_id) REFERENCES roles(id);
