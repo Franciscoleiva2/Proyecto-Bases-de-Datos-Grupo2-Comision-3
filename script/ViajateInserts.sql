@@ -1,66 +1,62 @@
--- Insertar comunidades
-INSERT INTO comunidad (nombre, descripcion)
-VALUES 
-    ('UNNE', 'Comunidad de la Universidad Nacional del Nordeste'),
-    ('Cuenca del Plata', 'Comunidad de la Universidad Cuenca del Plata');
+USE viajate;
 
--- Insertar usuarios
+-- Insertar datos en la tabla usuarios
 INSERT INTO usuarios (nombre, apellido, email, contraseña)
 VALUES 
-    ('Cesar', 'Huici', 'cesar.huici@viajate.com', 'password1'),
-    ('Emilio', 'Barrios', 'emilio.barrios@viajate.com', 'password2'),
-    ('Francisco', 'Leiva', 'francisco.leiva@viajate.com', 'password3'),
-    ('Diego', 'Gauto', 'diego.gauto@viajate.com', 'password4');
+('Juan', 'Pérez', 'juan.perez@example.com', 'password123'),
+('María', 'García', 'maria.garcia@example.com', 'password123'),
+('Carlos', 'Sánchez', 'carlos.sanchez@example.com', 'password123'),
+('Ana', 'López', 'ana.lopez@example.com', 'password123');
 
--- Insertar detalles del usuario
-INSERT INTO usuarios_detalle (usuarios_id, telefono, genero, terminos, fecha_nacimiento)
+-- Insertar datos en la tabla usuarios_detalles
+INSERT INTO usuarios_detalles (usuarios_id, telefono, genero, fecha_nacimiento, biografia, foto_url)
 VALUES 
-    (1, '3794000001', 'Masculino', 1, '1990-04-05'),
-    (2, '3794000002', 'Masculino', 1, '1992-06-12'),
-    (3, '3794000003', 'Masculino', 1, '1991-08-25'),
-    (4, '3794000004', 'Masculino', 1, '1989-11-10');
+(1, '123456789', 'Masculino', '1990-01-01', 'Me encanta viajar y conocer gente.', 'https://example.com/foto1.jpg'),
+(2, '987654321', 'Femenino', '1992-05-15', 'Apasionada por los road trips.', 'https://example.com/foto2.jpg'),
+(3, '456789123', 'Masculino', '1988-08-20', 'Amante de las aventuras al aire libre.', 'https://example.com/foto3.jpg'),
+(4, '789123456', 'Femenino', '1995-12-30', 'Viajar es mi pasión.', 'https://example.com/foto4.jpg');
 
--- Asignar usuarios a comunidades
-INSERT INTO usuarios_comunidad (usuarios_id, comunidad_id)
+-- Insertar datos en la tabla comunidades
+INSERT INTO comunidades (nombre, descripcion)
 VALUES 
-    (1, 1), -- Cesar en UNNE
-    (2, 1), -- Emilio en UNNE
-    (3, 2), -- Francisco en Cuenca del Plata
-    (4, 2); -- Diego en Cuenca del Plata
+('Viajantes Argentina', 'Comunidad de viajeros en Argentina.'),
+('Road Trippers', 'Amantes de los viajes en auto.'),
+('Aventureros Unidos', 'Exploradores de naturaleza y aventura.');
 
--- Insertar viajes
-INSERT INTO viajes (usuarios_id, origen, destino, fecha, hora, precio)
+-- Insertar datos en la tabla usuarios_comunidades
+INSERT INTO usuarios_comunidades (usuarios_id, comunidades_id, fecha_union)
 VALUES 
-    (1, 'Corrientes', 'Resistencia', '2024-10-05', '08:00:00', 500.00),
-    (2, 'Resistencia', 'Formosa', '2024-10-06', '09:00:00', 800.00),
-    (3, 'Corrientes', 'Posadas', '2024-10-07', '10:30:00', 1200.00),
-    (4, 'Posadas', 'Buenos Aires', '2024-10-08', '07:00:00', 1500.00);
+(1, 1, '2023-01-01'),
+(2, 2, '2023-02-15'),
+(3, 3, '2023-03-20'),
+(4, 1, '2023-04-10');
 
--- Insertar detalles del viaje
-INSERT INTO viajes_detalle (viajes_id, asientos, descripcion, mascotas, is_available, cancelado, equipaje)
+-- Insertar datos en la tabla tipos_vehiculos
+INSERT INTO tipos_vehiculos (tipo)
 VALUES 
-    (1, 3, 'Viaje rápido con aire acondicionado', 1, 1, 0, '2 maletas grandes'),
-    (2, 2, 'Viaje sin mascotas', 0, 1, 0, '1 maleta mediana'),
-    (3, 4, 'Acepta mascotas y tiene espacio para equipaje', 1, 1, 0, '4 maletas pequeñas'),
-    (4, 2, 'Viaje largo con aire acondicionado', 0, 1, 0, '2 maletas grandes');
+('Auto'),
+('SUV'),
+('Moto');
 
--- Insertar viajes de rutina
-INSERT INTO viajes_rutina (viajes_id, comunidad_id, frecuencia)
+-- Insertar datos en la tabla tipos_combustible
+INSERT INTO tipos_combustible (tipo)
 VALUES 
-    (1, 1, 'Diario'), -- Viaje de Cesar en UNNE
-    (2, 1, 'Semanal'), -- Viaje de Emilio en UNNE
-    (3, 2, 'Mensual'); -- Viaje de Francisco en Cuenca del Plata
+('Gasolina'),
+('Diesel'),
+('Eléctrico');
 
--- Insertar solicitudes
-INSERT INTO solicitudes (viajes_id, conductor_id, solicitante_id, notificado, aceptado)
+-- Insertar datos en la tabla vehiculos
+INSERT INTO vehiculos (usuario_id, tipo_vehiculo_id, tipo_combustible_id, marca, modelo, año, color, capacidad)
 VALUES 
-    (1, 1, 2, 1, 1), -- Emilio solicita viaje a Cesar
-    (2, 2, 3, 1, 1), -- Francisco solicita viaje a Emilio
-    (3, 3, 4, 1, 0); -- Diego solicita viaje a Francisco
+(1, 1, 1, 'Toyota', 'Corolla', 2015, 'Rojo', 4),
+(2, 2, 2, 'Ford', 'Explorer', 2018, 'Negro', 7),
+(3, 3, 1, 'Honda', 'CBR600RR', 2020, 'Azul', 2),
+(4, 1, 3, 'Nissan', 'Leaf', 2019, 'Blanco', 5);
 
--- Insertar tipos de combustible
-INSERT INTO combustibles (nombre, precio, descripcion)
+-- Insertar datos en la tabla viajes
+INSERT INTO viajes (usuarios_id, vehiculo_id, origen, destino, fecha, hora, precio, asientos_disponibles, duracion_estimada)
 VALUES 
-    ('Nafta', 150.00, 'Combustible común para autos de media gama'),
-    ('Gasoil', 130.00, 'Combustible diesel para vehículos pesados'),
-    ('Eléctrico', 90.00, 'Energía para vehículos eléctricos recargables');
+(1, 1, 'Buenos Aires', 'Córdoba', '2024-01-10', '08:00', 5000.00, 3, '08:00'),
+(2, 2, 'Rosario', 'Mendoza', '2024-01-15', '09:00', 7500.00, 5, '10:00'),
+(3, 3, 'Posadas', 'Resistencia', '2024-02-10', '06:30', 2000.00, 1, '05:30'),
+(4, 4, 'Córdoba', 'Salta', '2024-02-20', '07:45', 6000.00, 4, '07:45');
