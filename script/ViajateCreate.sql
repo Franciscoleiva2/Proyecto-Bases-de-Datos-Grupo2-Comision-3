@@ -1,5 +1,5 @@
---CREATE DATABASE viajate_nf;
-USE viajate_nf;
+CREATE DATABASE viajate;
+USE viajate;
 GO
 
 -- Tabla: usuarios
@@ -13,40 +13,33 @@ CREATE TABLE usuarios (
     calificacion DECIMAL(2, 1) DEFAULT 5.0 -- Calificación promedio del usuario
 );
 
--- Tabla: tipos_genero
-CREATE TABLE tipos_genero (
+-- Tabla: usuarios_detalles
+CREATE TABLE usuarios_detalles (
     id INT PRIMARY KEY IDENTITY(1,1),
-    genero VARCHAR(10) NOT NULL UNIQUE -- Ejemplo: "Masculino", "Femenino", "Otro"
-);
-
--- Tabla: perfiles_usuarios
-CREATE TABLE perfiles_usuarios (
-    id INT PRIMARY KEY IDENTITY(1,1),
-    usuario_id INT NOT NULL,
+    usuarios_id INT NOT NULL,
     telefono VARCHAR(20),
-    genero_id INT,
+    genero VARCHAR(40),
     fecha_nacimiento DATE,
     biografia TEXT,
     foto_url VARCHAR(255),
-    CONSTRAINT FK_perfil_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
-    CONSTRAINT FK_genero_usuario FOREIGN KEY (genero_id) REFERENCES tipos_genero(id)
+    CONSTRAINT FK_usuarios_detalles_usuarios FOREIGN KEY (usuarios_id) REFERENCES usuarios(id),
 );
 
 -- Tabla: comunidad
-CREATE TABLE comunidad (
+CREATE TABLE comunidades (
     id INT PRIMARY KEY IDENTITY(1,1),
     nombre VARCHAR(255) NOT NULL,
     descripcion TEXT
 );
 
 -- Tabla intermedia: usuarios_comunidad
-CREATE TABLE usuarios_comunidad (
-    usuario_id INT NOT NULL,
-    comunidad_id INT NOT NULL,
+CREATE TABLE usuarios_comunidades (
+    usuarios_id INT NOT NULL,
+    comunidades_id INT NOT NULL,
     fecha_union DATE NOT NULL DEFAULT GETDATE(),
-    CONSTRAINT PK_usuarios_comunidad PRIMARY KEY (usuario_id, comunidad_id),
-    CONSTRAINT FK_usuarios_comunidad_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
-    CONSTRAINT FK_usuarios_comunidad_comunidad FOREIGN KEY (comunidad_id) REFERENCES comunidad(id)
+    CONSTRAINT PK_usuarios_comunidades PRIMARY KEY (usuarios_id, comunidades_id),
+    CONSTRAINT FK_usuarios_comunidades_usuarios FOREIGN KEY (usuarios_id) REFERENCES usuarios(id),
+    CONSTRAINT FK_usuarios_comunidades_comunidades FOREIGN KEY (comunidades_id) REFERENCES comunidad(id)
 );
 
 -- Tabla: tipos_vehiculos
@@ -72,7 +65,7 @@ CREATE TABLE vehiculos (
     año INT NOT NULL,
     color VARCHAR(50),
     capacidad INT NOT NULL,
-    CONSTRAINT FK_vehiculos_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+    CONSTRAINT FK_vehiculos_usuarios FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
     CONSTRAINT FK_tipo_vehiculo FOREIGN KEY (tipo_vehiculo_id) REFERENCES tipos_vehiculos(id),
     CONSTRAINT FK_tipo_combustible FOREIGN KEY (tipo_combustible_id) REFERENCES tipos_combustible(id)
 );
@@ -80,7 +73,7 @@ CREATE TABLE vehiculos (
 -- Tabla: viajes
 CREATE TABLE viajes (
     id INT PRIMARY KEY IDENTITY(1,1),
-    usuario_id INT NOT NULL,
+    usuarios_id INT NOT NULL,
     vehiculo_id INT NOT NULL,
     origen VARCHAR(255) NOT NULL,
     destino VARCHAR(255) NOT NULL,
@@ -89,7 +82,7 @@ CREATE TABLE viajes (
     precio DECIMAL(10, 2) NOT NULL,
     asientos_disponibles INT NOT NULL,
     duracion_estimada TIME,
-    CONSTRAINT FK_viajes_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+    CONSTRAINT FK_viajes_usuarios FOREIGN KEY (usuarios_id) REFERENCES usuarios(id),
     CONSTRAINT FK_viajes_vehiculo FOREIGN KEY (vehiculo_id) REFERENCES vehiculos(id)
 );
 
@@ -101,10 +94,10 @@ CREATE TABLE caracteristicas (
 
 -- Tabla: viajes_caracteristicas
 CREATE TABLE viajes_caracteristicas (
-    viaje_id INT NOT NULL,
+    viajes_id INT NOT NULL,
     caracteristica_id INT NOT NULL,
-    CONSTRAINT PK_viajes_caracteristicas PRIMARY KEY (viaje_id, caracteristica_id),
-    CONSTRAINT FK_viajes_caracteristicas_viaje FOREIGN KEY (viaje_id) REFERENCES viajes(id),
+    CONSTRAINT PK_viajes_caracteristicas PRIMARY KEY (viajes_id, caracteristica_id),
+    CONSTRAINT FK_viajes_caracteristicas_viaje FOREIGN KEY (viajes_id) REFERENCES viajes(id),
     CONSTRAINT FK_viajes_caracteristicas_caracteristica FOREIGN KEY (caracteristica_id) REFERENCES caracteristicas(id)
 );
 
@@ -117,31 +110,24 @@ CREATE TABLE estados_reserva (
 -- Tabla: reservas
 CREATE TABLE reservas (
     id INT PRIMARY KEY IDENTITY(1,1),
-    viaje_id INT NOT NULL,
-    usuario_id INT NOT NULL,
+    viajes_id INT NOT NULL,
+    usuarios_id INT NOT NULL,
     fecha_reserva DATE NOT NULL DEFAULT GETDATE(),
     asientos_reservados INT NOT NULL,
     estado_reserva_id INT NOT NULL,
-    CONSTRAINT FK_reservas_viaje FOREIGN KEY (viaje_id) REFERENCES viajes(id),
-    CONSTRAINT FK_reservas_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+    CONSTRAINT FK_reservas_viajes FOREIGN KEY (viajes_id) REFERENCES viajes(id),
+    CONSTRAINT FK_reservas_usuarios FOREIGN KEY (usuarios_id) REFERENCES usuarios(id),
     CONSTRAINT FK_estado_reserva FOREIGN KEY (estado_reserva_id) REFERENCES estados_reserva(id)
-);
-
--- Tabla: valores_calificacion
-CREATE TABLE valores_calificacion (
-    id INT PRIMARY KEY IDENTITY(1,1),
-    valor INT NOT NULL CHECK (valor BETWEEN 1 AND 5) -- Rango de calificaciones
 );
 
 -- Tabla: valoraciones
 CREATE TABLE valoraciones (
     id INT PRIMARY KEY IDENTITY(1,1),
-    viaje_id INT NOT NULL,
-    usuario_id INT NOT NULL,
-    calificacion_id INT NOT NULL,
+    viajes_id INT NOT NULL,
+    usuarios_id INT NOT NULL,
+    calificacion INT NOT NULL,
     comentario TEXT,
     fecha_valoracion DATE NOT NULL DEFAULT GETDATE(),
-    CONSTRAINT FK_valoraciones_viaje FOREIGN KEY (viaje_id) REFERENCES viajes(id),
-    CONSTRAINT FK_valoraciones_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
-    CONSTRAINT FK_valoraciones_calificacion FOREIGN KEY (calificacion_id) REFERENCES valores_calificacion(id)
+    CONSTRAINT FK_valoraciones_viajes FOREIGN KEY (viajes_id) REFERENCES viajes(id),
+    CONSTRAINT FK_valoraciones_usuarios FOREIGN KEY (usuarios_id) REFERENCES usuarios(id),
 );
