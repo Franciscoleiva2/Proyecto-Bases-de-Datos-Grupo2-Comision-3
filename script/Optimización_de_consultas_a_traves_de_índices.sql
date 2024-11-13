@@ -1,6 +1,14 @@
+GO
+
+USE viajate;
+
+GO
+
+select * from viajes
+
 /*
 PUNTO 1:
-Realizar una carga masiva de por lo menos un millón de registros en la tabla 'viajes' de la base de datos 'viajate_nf'.
+Realizar una carga masiva de por lo menos un millón de registros en la tabla 'viajes' de la base de datos 'viajate'.
 */
 
 -- Declaramos una variable para controlar el bucle
@@ -10,11 +18,11 @@ DECLARE @contador INT = 1;
 WHILE @contador <= 1000000
 BEGIN
     -- Inserta un lote de 1000 registros en cada iteración
-    INSERT INTO viajes (usuario_id, vehiculo_id, origen, destino, fecha, hora, precio, asientos_disponibles)
+    INSERT INTO viajes (usuarios_id, vehiculo_id, origen, destino, fecha, hora, precio, asientos_disponibles)
     SELECT
-        ((@contador + n - 1) % 4) + 1 AS usuario_id,              -- IDs de usuarios que van del 1 al 4
-        ((@contador + n - 1) % 2) + 1 AS vehiculo_id,             -- IDs de vehículos que van del 1 al 2
-        CASE ((@contador + n - 1) % 10)                           -- Ciudades de origen en secuencia
+        ((@contador + n - 1) % 4) + 1 AS usuarios_id,              -- IDs de usuarios que van del 1 al 4
+        ((@contador + n - 1) % 2) + 1 AS vehiculo_id,              -- IDs de vehículos que van del 1 al 2
+        CASE ((@contador + n - 1) % 10)                            -- Ciudades de origen en secuencia
             WHEN 0 THEN 'Corrientes'
             WHEN 1 THEN 'Resistencia'
             WHEN 2 THEN 'Formosa'
@@ -26,7 +34,7 @@ BEGIN
             WHEN 8 THEN 'Salta'
             ELSE 'Bariloche'
         END AS origen,
-        CASE ((@contador + n) % 10)                               -- Ciudades de destino en secuencia
+        CASE ((@contador + n) % 10)                                -- Ciudades de destino en secuencia
             WHEN 9 THEN 'Corrientes'
             WHEN 8 THEN 'Resistencia'
             WHEN 7 THEN 'Formosa'
@@ -60,12 +68,12 @@ sp_help viajes
 go
 
 -- Filtrar Registros por Fecha en la tabla 'viajes'
-SELECT fecha, origen, destino, fecha, hora, precio, asientos_disponibles
+SELECT fecha, origen, destino, hora, precio, asientos_disponibles
 FROM viajes 
 WHERE fecha BETWEEN '2024-01-01' AND '2024-03-31';
 
 -- Plan de Ejecución: Clustered Index Scan
--- Tiempo de Ejecución: 0.166s
+-- Tiempo de Ejecución: 0.247s 
 
 /*
 PUNTO 3:
@@ -73,8 +81,8 @@ Definir un índice agrupado sobre la columna fecha y repetir la consulta anterio
 Registrar el plan de ejecución utilizado por el motor y los tiempos de respuesta.
 */
 
--- Crea una copia de la tabla 'viajes' sin restricciones ni índices
-SELECT fecha, origen, destino, fecha, hora, precio, asientos_disponibles
+-- Crear una copia de la tabla 'viajes' sin restricciones ni índices
+SELECT fecha, origen, destino, hora, precio, asientos_disponibles
 INTO viajes_sin_restricciones
 FROM viajes;
 
@@ -85,17 +93,17 @@ go
 sp_help viajes
 go
 
--- Crear un índice agrupado en la columna 'fecha' en la tabla 'viajes'
+-- Crear un índice agrupado en la columna 'fecha' en la tabla 'viajes_sin_restricciones'
 CREATE CLUSTERED INDEX IX_fecha_viajes 
 ON viajes_sin_restricciones(fecha);
 
--- Filtrar Registros por Fecha en 'viajes_sin_restricciones'
-SELECT fecha, origen, destino, fecha, hora, precio, asientos_disponibles
+-- Filtrar registros por fecha en 'viajes_sin_restricciones'
+SELECT fecha, origen, destino, hora, precio, asientos_disponibles
 FROM viajes_sin_restricciones 
 WHERE fecha BETWEEN '2024-01-01' AND '2024-03-31';
 
 -- Plan de Ejecución: Clustered Index Seek
--- Tiempo de Ejecución: 0.078s
+-- Tiempo de Ejecución: 0.156s (registrar este valor)
 
 -- Comparar tiempos de acceso
 SELECT fecha, origen, destino, fecha, hora, precio, asientos_disponibles
@@ -132,9 +140,9 @@ sp_help viajes_sin_restricciones
 go
 
 -- Repetir la consulta para observar los cambios en el plan de ejecución y tiempo de respuesta
-SELECT fecha, origen, destino, fecha, hora, precio, asientos_disponibles
+SELECT fecha, origen, destino, hora, precio, asientos_disponibles
 FROM viajes_sin_restricciones 
 WHERE fecha BETWEEN '2024-01-01' AND '2024-03-31';
 
 -- Plan de Ejecución: Clustered Index Seek
--- Tiempo de Ejecución: 0.075s
+-- Tiempo de Ejecución: 0.150s (registrar este valor)
