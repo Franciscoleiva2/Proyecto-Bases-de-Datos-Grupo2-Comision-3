@@ -117,20 +117,133 @@ El desarrollo de la plataforma **Viajate** se centró en el diseño y creación 
 
 ### Optimización de Consultas en la Base de Datos
 
-#### Descripción del Conjunto de Datos
-Se trabajó con la tabla `viajes`, diseñada para almacenar información clave sobre los viajes compartidos en **Viajate**. Las columnas principales incluyen `usuarios_id`, `vehiculo_id`, `origen`, `destino`, `fecha`, `hora`, `precio` y `asientos_disponibles`.
-
 #### Carga Masiva de Datos
-Para realizar pruebas de rendimiento y optimización, se realizó una carga masiva de un millón de registros en la tabla `viajes`, con datos generados de manera secuencial y aleatoria. Este proceso permitió obtener un conjunto de datos adecuado para medir la eficiencia de las consultas.
+Realizar una carga masiva de por lo menos un millón de registros en la tabla 'viajes'.
 
-#### Evaluación Inicial de la Consulta sin Índices
-Se realizó una consulta inicial en la tabla `viajes` sin índices, buscando registros entre el 1 de enero y el 31 de marzo de 2024. El plan de ejecución mostró un *Clustered Index Scan*, con un tiempo de respuesta de aproximadamente 0.247 segundos, lo cual sirvió como punto de referencia.
+```sql
+
+-- Declaramos una variable para controlar el bucle
+DECLARE @contador INT = 1;
+
+
+-- Comienza el bucle WHILE
+WHILE @contador <= 1000000
+BEGIN
+    -- Inserta un lote de 1000 registros en cada iteración
+    INSERT INTO viajes (usuarios_id, vehiculo_id, origen, destino, fecha, hora, precio, asientos_disponibles)
+    SELECT
+        ((@contador + n - 1) % 4) + 1 AS usuarios_id,              -- IDs de usuarios que van del 1 al 4
+        ((@contador + n - 1) % 2) + 1 AS vehiculo_id,              -- IDs de vehículos que van del 1 al 2
+        CASE ((@contador + n - 1) % 10)                            -- Ciudades de origen en secuencia
+            WHEN 0 THEN 'Corrientes'
+            WHEN 1 THEN 'Resistencia'
+            WHEN 2 THEN 'Formosa'
+            WHEN 3 THEN 'Posadas'
+            WHEN 4 THEN 'Buenos Aires'
+            WHEN 5 THEN 'Rosario'
+            WHEN 6 THEN 'Córdoba'
+            WHEN 7 THEN 'Mendoza'
+            WHEN 8 THEN 'Salta'
+            ELSE 'Bariloche'
+        END AS origen,
+        CASE ((@contador + n) % 10)                                -- Ciudades de destino en secuencia
+            WHEN 9 THEN 'Corrientes'
+            WHEN 8 THEN 'Resistencia'
+            WHEN 7 THEN 'Formosa'
+            WHEN 6 THEN 'Posadas'
+            WHEN 5 THEN 'Buenos Aires'
+            WHEN 4 THEN 'Rosario'
+            WHEN 3 THEN 'Córdoba'
+            WHEN 2 THEN 'Mendoza'
+            WHEN 1 THEN 'Salta'
+            ELSE 'Bariloche'
+        END AS destino,
+        DATEADD(DAY, ((@contador + n - 1) % 365), '2024-01-01') AS fecha,  -- Fechas en 2024
+        CONVERT(TIME, DATEADD(MINUTE, ((@contador + n - 1) % 1440), '00:00')) AS hora,  -- Horas del día
+        CAST(8000 + ((@contador + n - 1) % 92000) * 1.0 AS DECIMAL(10,2)) AS precio,   -- Precio entre 8000 y 100000
+        ((@contador + n - 1) % 5) + 1 AS asientos_disponibles -- Número de asientos disponibles entre 1 y 5
+    FROM 
+        (SELECT TOP 1000 ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS n FROM sys.all_objects) AS Numbers;
+
+
+    -- Incrementa el contador en 1000 para el siguiente lote
+    SET @contador = @contador + 1000;
+END;
+```
+
+#### Evaluación Inicial de la Consulta 
+Realizar una búsqueda por periodo y registrar el plan de ejecución utilizado por el motor y los tiempos de respuesta.
+
+```sql
+-- Filtrar Registros por Fecha en la tabla 'viajes'
+SELECT fecha, origen, destino, hora, precio, asientos_disponibles
+FROM viajes 
+WHERE fecha BETWEEN '2024-01-01' AND '2024-03-31';
+
+
+-- Plan de Ejecución: Clustered Index Scan
+-- Tiempo de Ejecución: 0.772s 
+```
+
+##### Salida:
+
+![Captura de pantalla (154)](https://github.com/user-attachments/assets/41cbc9d5-ba3f-4638-bd17-a02b4bc5bc6c)
 
 #### Implementación de Índices
 
-- **Índice Agrupado en la Columna `fecha`**: Al crear un índice agrupado en la columna `fecha`, el plan de ejecución cambió a un *Clustered Index Seek* y el tiempo de respuesta mejoró a 0.156 segundos. Esto demostró la efectividad de un índice en la optimización de consultas por rango de fechas.
+- **Índice Agrupado en la Columna `fecha`**: Definir un índice agrupado sobre la columna fecha y repetir la consulta anterior.
+Registrar el plan de ejecución utilizado por el motor y los tiempos de respuesta.
+
+
+```sql
+-- Crear una copia de la tabla 'viajes' sin restricciones ni índices
+SELECT fecha, origen, destino, hora, precio, asientos_disponibles
+INTO viajes_sin_restricciones
+FROM viajes;
+
+
+-- Crear un índice agrupado en la columna 'fecha' en la tabla 'viajes_sin_restricciones'
+CREATE CLUSTERED INDEX IX_fecha_viajes 
+ON viajes_sin_restricciones(fecha);
+
+
+-- Filtrar registros por fecha en 'viajes_sin_restricciones'
+SELECT fecha, origen, destino, hora, precio, asientos_disponibles
+FROM viajes_sin_restricciones 
+WHERE fecha BETWEEN '2024-01-01' AND '2024-03-31';
+
+
+-- Plan de Ejecución: Clustered Index Seek
+-- Tiempo de Ejecución: 0.434s
+```
+
+##### Salida:
+
+![Captura de pantalla (155)](https://github.com/user-attachments/assets/92cc1d78-a153-4933-a273-91a6b20fab4c)
   
-- **Índice Agrupado con Múltiples Columnas**: Para optimizar aún más, se añadió un índice agrupado en las columnas `fecha`, `origen`, `destino`, `hora`, `precio` y `asientos_disponibles`. Esto permitió reducir el tiempo de respuesta a 0.150 segundos y facilitó el acceso a múltiples columnas en una única consulta.
+- **Índice Agrupado con Múltiples Columnas**: Definir otro índice agrupado sobre la columna 'fecha' en la tabla 'viajes' que además incluya las columnas seleccionadas 
+y repetir la consulta anterior. Registrar el plan de ejecución utilizado por el motor y los tiempos de respuesta.
+
+
+```sql
+CREATE CLUSTERED INDEX IX_fecha_viajes
+ON viajes_sin_restricciones (fecha, origen, destino, hora, precio, asientos_disponibles);
+
+
+-- Repetir la consulta para observar los cambios en el plan de ejecución y tiempo de respuesta
+SELECT fecha, origen, destino, hora, precio, asientos_disponibles
+FROM viajes_sin_restricciones 
+WHERE fecha BETWEEN '2024-01-01' AND '2024-03-31';
+
+
+-- Plan de Ejecución: Clustered Index Seek
+-- Tiempo de Ejecución: 0.434s (registrar este valor)
+```
+
+##### Salida
+
+![Captura de pantalla (156)](https://github.com/user-attachments/assets/ac6658c2-7013-4768-95ac-9033eeab8fd6)
+
 
 **TEMA 2: "Procedimientos y Funciones Almacenadas en Viajate"**
 La implementación de procedimientos y funciones almacenadas en Viajate ha sido una estrategia fundamental para gestionar las operaciones clave de la aplicación directamente en el servidor de base de datos. Al encapsular la lógica de negocio en estos elementos, Viajate logra mejorar la eficiencia, seguridad y coherencia de sus transacciones. Los procedimientos almacenados en Viajate permiten realizar operaciones complejas como la creación, modificación y eliminación de usuarios, así como el manejo de reservas y solicitudes de viaje, asegurando que la lógica de negocio se ejecute de forma segura y eficiente, reduciendo los errores y centralizando el control en un único punto.
