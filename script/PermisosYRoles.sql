@@ -88,3 +88,18 @@ SELECT * FROM viajes;
 
 -- Ejecutar como UsuarioSinPermiso: Debería fallar al intentar hacer SELECT en "viajes"
  SELECT * FROM viajes;
+
+ /* 
+	CONCLUSIONES 
+	En este ejercicio, se asignaron permisos y roles específicos en nuestra base de datos para simular y 
+	verificar cómo diferentes tipos de permisos afectan las capacidades de los usuarios al interactuar con las tablas.
+
+	Se confirmó la efectividad de los permisos a nivel de usuario para limitar el acceso a datos 
+	críticos y mantener la integridad de los datos.
+
+	Se observó que el usuario asignado al rol de  “SoloLecturaViajes” pudo realizar consultas a la tabla,
+	mientras que el usuario sin este rol fue denegado al intentar ejecutar la misma consulta. 
+
+	Asignar permisos específicos a nivel de usuario permite controlar actividades específicas, 
+	mientras que los roles simplifican o “generalizan” la gestión de permisos en entornos con múltiples usuarios.
+ */
