@@ -132,9 +132,14 @@ Se realizó una consulta inicial en la tabla `viajes` sin índices, buscando reg
   
 - **Índice Agrupado con Múltiples Columnas**: Para optimizar aún más, se añadió un índice agrupado en las columnas `fecha`, `origen`, `destino`, `hora`, `precio` y `asientos_disponibles`. Esto permitió reducir el tiempo de respuesta a 0.150 segundos y facilitó el acceso a múltiples columnas en una única consulta.
 
-#### Comparación de Rendimiento
-Al comparar los tiempos de respuesta entre las consultas en tablas con y sin índices, se observó una mejora significativa en el tiempo de ejecución al utilizar índices agrupados, en especial en consultas sobre grandes volúmenes de datos.
+**TEMA 2: "Procedimientos y Funciones Almacenadas en Viajate"**
+La implementación de procedimientos y funciones almacenadas en Viajate ha sido una estrategia fundamental para gestionar las operaciones clave de la aplicación directamente en el servidor de base de datos. Al encapsular la lógica de negocio en estos elementos, Viajate logra mejorar la eficiencia, seguridad y coherencia de sus transacciones. Los procedimientos almacenados en Viajate permiten realizar operaciones complejas como la creación, modificación y eliminación de usuarios, así como el manejo de reservas y solicitudes de viaje, asegurando que la lógica de negocio se ejecute de forma segura y eficiente, reduciendo los errores y centralizando el control en un único punto.
 
+Las funciones almacenadas, por su parte, facilitan cálculos específicos y el procesamiento de datos en consultas, como el cálculo de la edad de un usuario o el promedio de reservas de un conductor. Esto permite obtener datos precisos de manera optimizada y sin sobrecargar el procesamiento del cliente, mejorando la experiencia del usuario y el rendimiento de la aplicación.
+
+Sin embargo, la centralización de la lógica en procedimientos y funciones también conlleva ciertos desafíos en el contexto de Viajate. Al depender de SQL Server, la portabilidad de la solución a otros sistemas de bases de datos se ve limitada, lo cual puede ser un obstáculo si se requiere migrar o integrar la aplicación en otros entornos. Además, el mantenimiento y la depuración de lógica almacenada pueden resultar más complejos en proyectos colaborativos y distribuidos, donde múltiples desarrolladores deben gestionar el código en la base de datos y asegurar la coherencia en los cambios.
+
+En conclusión, el uso de procedimientos y funciones almacenadas en Viajate ha proporcionado una base sólida para la eficiencia y seguridad de las operaciones en el servidor, lo que es clave para el éxito de la aplicación. No obstante, es esencial evaluar continuamente su impacto en la flexibilidad y escalabilidad del sistema, considerando el equilibrio adecuado entre la eficiencia centralizada y la capacidad de adaptación del sistema para futuras expansiones.
 #### Impacto en `Viajate`
 Estas optimizaciones en la base de datos resultan fundamentales para **Viajate**, ya que permiten una experiencia de usuario más fluida, con consultas y búsquedas rápidas en una plataforma que maneja grandes volúmenes de información de viajes compartidos.
 
