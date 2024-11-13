@@ -146,3 +146,12 @@ WHERE fecha BETWEEN '2024-01-01' AND '2024-03-31';
 
 -- Plan de Ejecución: Clustered Index Seek
 -- Tiempo de Ejecución: 0.150s (registrar este valor)
+
+/*
+CONCLUSIÓN:
+El uso de índices agrupados en columnas frecuentemente utilizadas para filtros 
+(como fecha) mejora considerablemente el tiempo de respuesta en consultas sobre 
+grandes conjuntos de datos. Además, incluir en el índice agrupado las columnas más consultadas
+permite optimizar aún más el acceso y reduce el tiempo de ejecución, resultando en 
+un sistema más eficiente y rápido para consultas de filtrado en grandes tablas como viajes
+*/
