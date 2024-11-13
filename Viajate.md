@@ -353,7 +353,11 @@ JSON_VALUE y JSON_QUERY. Estas funciones permiten extraer valores específicos y
 JSON_VALUE: Esta función permite recuperar valores simples, como texto, números o booleanos, desde una columna JSON. Es ideal para extraer datos individuales en un formato plano.
 ![alt text](image-6.png)  
 
+Creacion de usuarios y asignacion de permisos
+![alt text](image-8.png)
 
+Asignacion de roles
+![alt text](image-9.png)
 Optimización mediante Columnas Calculadas e Índices
 Para optimizar el rendimiento de las consultas sobre datos JSON, se creó la columna calculada bebida_preferida, que extrae la preferencia de bebida de cada viaje. Luego, se agregó un índice a esta columna para mejorar el rendimiento en consultas frecuentes. Esto facilitó el acceso rápido a propiedades JSON específicas sin afectar la flexibilidad de almacenamiento.
 ![alt text](image-7.png)
