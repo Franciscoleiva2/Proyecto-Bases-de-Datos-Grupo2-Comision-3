@@ -21,7 +21,7 @@ END;
 GO
 
 -- Procedimiento para Modificar un Usuario
-CREATE OR ALTER PROCEDURE ModificarUsuario
+CREATE PROCEDURE ModificarUsuario
     @UsuarioID INT,
     @Nombre VARCHAR(255) = NULL,
     @Apellido VARCHAR(255) = NULL,
