@@ -56,6 +56,18 @@ UPDATE datos_adicionales
 SET datos = JSON_MODIFY(datos, '$.preferencias.comida', 'japonesa')
 WHERE usuarios_id = 1;
 
+--- convertir automáticamente los resultados de una consulta SQL en formato JSON
+SELECT 
+    u.id AS usuario_id,
+    u.nombre,
+    u.apellido,
+    d.datos
+FROM 
+    usuarios u
+JOIN 
+    datos_adicionales d ON u.id = d.usuarios_id
+FOR JSON AUTO;
+
 SELECT * FROM datos_adicionales where usuarios_id = 1
 -- Agregar un nuevo campo al JSON existente
 UPDATE datos_adicionales
@@ -71,10 +83,11 @@ UPDATE datos_adicionales
 SET datos = JSON_MODIFY(datos, '$.preferencias.bebida', 'vino tinto')
 WHERE usuarios_id = 3;
 
--- Eliminar una propiedad del JSON
 UPDATE datos_adicionales
-SET datos = JSON_MODIFY(datos, 'delete $.preferencias.música')
+SET datos = JSON_MODIFY(datos, '$.preferencias.música', NULL)
 WHERE usuarios_id = 1;
+
+
 
 -- Tarea 4: Realizar operaciones de consultas en datos JSON
 -- Consultar un valor específico dentro del JSON
