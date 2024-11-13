@@ -4,11 +4,9 @@ USE viajate;
 
 GO
 
-select * from viajes
-
 /*
 PUNTO 1:
-Realizar una carga masiva de por lo menos un millón de registros en la tabla 'viajes' de la base de datos 'viajate'.
+Realizar una carga masiva de por lo menos un millón de registros en la tabla 'viajes'.
 */
 
 -- Declaramos una variable para controlar el bucle
