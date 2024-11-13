@@ -5,6 +5,7 @@
 **Asignatura**: Bases de Datos I (Facultad de Ciencias Exactas y Naturales - Universidad Nacional del Nordeste)
 
 **Integrantes**:
+
 - **Huici, Cesar Raúl**
 - **Barrios, Emilio Farid**
 - **Leiva, Francisco Emanuel**
@@ -28,12 +29,15 @@
 ## CAPÍTULO I: INTRODUCCIÓN
 
 ### Tema
+
 Este proyecto se enfoca en el desarrollo de **Viajate**, una aplicación para la organización de viajes compartidos. Su objetivo es conectar a personas que desean compartir trayectos en sus vehículos particulares, optimizando recursos y reduciendo costos y emisiones de carbono.
 
 ### Definición o Planteamiento del Problema
+
 El problema identificado es la falta de una plataforma centralizada que permita a los usuarios coordinar viajes compartidos de manera eficiente y segura. Esto genera inconvenientes como altos costos de transporte, mayor congestión vehicular y un impacto ambiental significativo debido al uso individual de vehículos. **Viajate** busca resolver estos problemas proporcionando una solución que reduzca los costos de transporte y las emisiones de gases de efecto invernadero.
 
 ### Objetivos
+
 - **Objetivo General**: Crear una plataforma de viajes compartidos que facilite la conexión entre usuarios que buscan compartir trayectos similares.
 - **Objetivos Específicos**:
   - Desarrollar un backend robusto que permita la gestión de usuarios, viajes y solicitudes.
@@ -47,7 +51,15 @@ El problema identificado es la falta de una plataforma centralizada que permita 
 
 El desarrollo de Viajate como un sistema de gestión de viajes compartidos requiere la implementación de funcionalidades esenciales que garantizan la eficiencia, seguridad y adaptabilidad del sistema a las diversas necesidades de sus usuarios. Al ser una plataforma destinada a coordinar trayectos compartidos, Viajate debe ofrecer un diseño robusto que permita el manejo seguro de información personal, la optimización de consultas para un acceso ágil a los datos, y la flexibilidad necesaria para adaptarse a diferentes patrones de uso. A continuación, se presentan los aspectos clave que guían su diseño.
 
-1. **Manejo de tipos de datos JSON en el Proyecto de Gestión de Viajes**
+1. **MANEJO DE PERMISOS A NIVEL DE USUARIOS DE BASE**:
+   Permisos
+   Un permiso es una autorización que se otorga a un usuario o grupo para que puedan realizar acciones específicas en un objeto dentro de la base de datos, como una tabla, vista o procedimiento almacenado. Los permisos permiten llevar a cabo operaciones como SELECT, INSERT, UPDATE y DELETE, así como otros más específicos, como EXECUTE para ejecutar procedimientos almacenados o ALTER para modificar la estructura de la base de datos.
+   Al asignar estos permisos, los administradores pueden gestionar el acceso que tiene cada usuario a diferentes áreas de la base de datos, definiendo qué acciones pueden realizar en ellas, y así asegurar la protección y privacidad de la información.
+
+Roles
+Un rol es una colección de permisos que se agrupa y se asigna a varios usuarios de forma conjunta. En lugar de dar permisos específicos a cada usuario individualmente, los roles permiten reunir permisos comunes bajo un solo nombre, lo que facilita la administración de accesos. Por ejemplo, un rol de "Administrador" puede incluir permisos para lectura y escritura en todas las tablas, mientras que un rol de "Usuario" podría tener solo permisos de lectura. Los roles pueden ser predefinidos por el sistema (como el rol db_owner en SQL Server) o creados por los administradores para ajustar los accesos a las necesidades específicas de la organización.
+
+2. **Manejo de tipos de datos JSON en el Proyecto de Gestión de Viajes**
 
 ¿Qué es JSON?
 JSON (JavaScript Object Notation) es un formato de datos ligero y fácil de leer utilizado para almacenar y transferir datos estructurados. Es muy común en aplicaciones web, ya que permite un intercambio eficiente de información entre el servidor y la interfaz de usuario. JSON organiza los datos en una estructura de clave-valor, lo que facilita su interpretación tanto por humanos como por sistemas de procesamiento automático.
@@ -77,20 +89,20 @@ Su naturaleza independiente del lenguaje permite el intercambio de datos entre d
 En este proyecto de gestión de viajes, JSON proporciona una solución flexible y escalable para manejar detalles de los viajes, mientras SQL Server se encarga de almacenar y consultar datos de manera estructurada.
 Las capacidades de SQL Server para manejar datos JSON enriquecen la funcionalidad de nuestras aplicaciones, al combinar lo mejor de los datos estructurados y semiestructurados en un solo sistema.
 
-2. **Permisos y Roles**: Conceptos clave para el diseño de bases de datos eficientes y seguras.
 3. **Optimizacion de consultas atraves de indices**: Metodologías y buenas prácticas para el diseño de APIs RESTful con Golang.
-4. **Procedimientos y funciones almacenadas**: 
-    En el contexto de una aplicación de viajes compartidos como Viajate, la implementación de procedimientos y funciones almacenadas en la base de datos aporta una capa fundamental de eficiencia, control y seguridad en la gestión de datos. Estos elementos se convierten en pilares de la lógica de negocio, permitiendo la centralización de operaciones en el servidor de la base de datos y proporcionando ventajas específicas que optimizan tanto el rendimiento como la integridad del sistema.
+4. **Procedimientos y funciones almacenadas**:
+   En el contexto de una aplicación de viajes compartidos como Viajate, la implementación de procedimientos y funciones almacenadas en la base de datos aporta una capa fundamental de eficiencia, control y seguridad en la gestión de datos. Estos elementos se convierten en pilares de la lógica de negocio, permitiendo la centralización de operaciones en el servidor de la base de datos y proporcionando ventajas específicas que optimizan tanto el rendimiento como la integridad del sistema.
 
-    Procedimientos Almacenados en Bases de Datos
-    Los procedimientos almacenados son conjuntos de instrucciones SQL almacenados en el servidor que ejecutan operaciones complejas, como el registro y actualización de usuarios o la creación de reservas de viaje. En Viajate, su utilización se enfoca en tareas críticas que requieren asegurar la consistencia y la seguridad de los datos en cada transacción.
+   Procedimientos Almacenados en Bases de Datos
+   Los procedimientos almacenados son conjuntos de instrucciones SQL almacenados en el servidor que ejecutan operaciones complejas, como el registro y actualización de usuarios o la creación de reservas de viaje. En Viajate, su utilización se enfoca en tareas críticas que requieren asegurar la consistencia y la seguridad de los datos en cada transacción.
 
-    La centralización de la lógica de negocio en procedimientos almacenados en el servidor permite que la aplicación Viajate mantenga un flujo constante y seguro de datos, reduciendo el margen de error y evitando accesos directos a las tablas. Los procedimientos almacenados también ayudan a minimizar el tráfico de red, ya que las operaciones se ejecutan directamente en el servidor, lo que resulta en un rendimiento optimizado al manejar grandes volúmenes de datos.
+   La centralización de la lógica de negocio en procedimientos almacenados en el servidor permite que la aplicación Viajate mantenga un flujo constante y seguro de datos, reduciendo el margen de error y evitando accesos directos a las tablas. Los procedimientos almacenados también ayudan a minimizar el tráfico de red, ya que las operaciones se ejecutan directamente en el servidor, lo que resulta en un rendimiento optimizado al manejar grandes volúmenes de datos.
 
-    Funciones Almacenadas en Bases de Datos
-    Las funciones almacenadas permiten realizar cálculos y transformaciones sobre los datos, devolviendo un valor específico que puede ser reutilizado en distintas consultas. En Viajate, las funciones almacenadas facilitan cálculos como la cantidad de reservas realizadas por un usuario o el cálculo de la edad de un usuario según su fecha de nacimiento. Estas funciones, al ejecutarse en el servidor, optimizan la eficiencia del sistema al reducir la carga de procesamiento en el cliente, integrándose en las consultas SQL de forma flexible y consistente.
+   Funciones Almacenadas en Bases de Datos
+   Las funciones almacenadas permiten realizar cálculos y transformaciones sobre los datos, devolviendo un valor específico que puede ser reutilizado en distintas consultas. En Viajate, las funciones almacenadas facilitan cálculos como la cantidad de reservas realizadas por un usuario o el cálculo de la edad de un usuario según su fecha de nacimiento. Estas funciones, al ejecutarse en el servidor, optimizan la eficiencia del sistema al reducir la carga de procesamiento en el cliente, integrándose en las consultas SQL de forma flexible y consistente.
 
-    Las funciones almacenadas en Viajate contribuyen significativamente a la personalización y generación de estadísticas dentro del sistema. Al encapsular operaciones específicas, las funciones almacenadas aseguran que las consultas y cálculos se realicen de manera uniforme y con coherencia, mejorando la experiencia del usuario final sin comprometer la seguridad de los datos.
+   Las funciones almacenadas en Viajate contribuyen significativamente a la personalización y generación de estadísticas dentro del sistema. Al encapsular operaciones específicas, las funciones almacenadas aseguran que las consultas y cálculos se realicen de manera uniforme y con coherencia, mejorando la experiencia del usuario final sin comprometer la seguridad de los datos.
+
 ---
 
 ## Optimizacion de consultas a través de indices
@@ -107,20 +119,21 @@ Los índices en bases de datos son estructuras auxiliares que optimizan el acces
 
 1. **Índice Clustered (Agrupado)**
    - Organiza los datos físicamente en el disco según el orden de la clave de índice.
-   - Solo puede haber un índice *clustered* por tabla, ya que determina el orden físico de los datos.
+   - Solo puede haber un índice _clustered_ por tabla, ya que determina el orden físico de los datos.
    - Ideal para consultas que involucran rangos de datos (por ejemplo, fechas), ya que los datos se almacenan de manera secuencial.
-   
 2. **Índice Nonclustered (No Agrupado)**
    - Crea una copia ordenada del índice sin cambiar el orden físico de los datos.
-   - Permite múltiples índices *nonclustered* en una tabla, útiles para optimizar consultas específicas.
-   - Cada índice *nonclustered* contiene un puntero que hace referencia al registro original en la tabla.
+   - Permite múltiples índices _nonclustered_ en una tabla, útiles para optimizar consultas específicas.
+   - Cada índice _nonclustered_ contiene un puntero que hace referencia al registro original en la tabla.
 
 ### Plan de Ejecución Estimado
+
 Es un análisis que muestra cómo el motor de la base de datos planea ejecutar una consulta antes de que esta se ejecute realmente. Este plan detalla los pasos y recursos que la base de datos utilizará para obtener los datos solicitados, como la selección de índices, operaciones de búsqueda (Index Seek), exploración (Index Scan), o combinación (Join), y el orden de las operaciones.
 
 ## CAPÍTULO III: METODOLOGÍA SEGUIDA
 
 ### Descripción de cómo se realizó el Trabajo Práctico
+
 El desarrollo de la plataforma **Viajate** se centró en el diseño y creación del backend utilizando Golang como lenguaje de programación y MySQL como sistema de gestión de bases de datos. Se trabajó en diferentes fases:
 
 1. **Definición de Requisitos**: Identificación de las necesidades de los usuarios y las funcionalidades clave que debía cubrir la plataforma.
@@ -128,6 +141,7 @@ El desarrollo de la plataforma **Viajate** se centró en el diseño y creación 
 3. **Desarrollo del Backend**: Implementación de funcionalidades clave como el registro de usuarios, creación de viajes y mensajería interna.
 
 ### Herramientas Utilizadas
+
 - **Golang**: Lenguaje de programación eficiente para la creación de APIs.
 - **MySQL**: Sistema de gestión de bases de datos relacional.
 - **Postman**: Herramienta para probar y documentar las APIs desarrolladas.
@@ -138,9 +152,11 @@ El desarrollo de la plataforma **Viajate** se centró en el diseño y creación 
 
 ## CAPÍTULO IV: DESARROLLO DEL TEMA / PRESENTACIÓN DE RESULTADOS
 
-3. **TEMA 3: Optimizacion de consultas a traves de indices**:
+1. **TEMA 1: Optimizacion de consultas a traves de indices**:
+2. **TEMA 3: Optimizacion de consultas a traves de indices**:
 
 #### Carga Masiva de Datos
+
 Realizar una carga masiva de por lo menos un millón de registros en la tabla 'viajes'.
 
 ```sql
@@ -185,7 +201,7 @@ BEGIN
         CONVERT(TIME, DATEADD(MINUTE, ((@contador + n - 1) % 1440), '00:00')) AS hora,  -- Horas del día
         CAST(8000 + ((@contador + n - 1) % 92000) * 1.0 AS DECIMAL(10,2)) AS precio,   -- Precio entre 8000 y 100000
         ((@contador + n - 1) % 5) + 1 AS asientos_disponibles -- Número de asientos disponibles entre 1 y 5
-    FROM 
+    FROM
         (SELECT TOP 1000 ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS n FROM sys.all_objects) AS Numbers;
 
 
@@ -194,18 +210,19 @@ BEGIN
 END;
 ```
 
-#### Evaluación Inicial de la Consulta 
+#### Evaluación Inicial de la Consulta
+
 Realizar una búsqueda por periodo y registrar el plan de ejecución utilizado por el motor y los tiempos de respuesta.
 
 ```sql
 -- Filtrar Registros por Fecha en la tabla 'viajes'
 SELECT fecha, origen, destino, hora, precio, asientos_disponibles
-FROM viajes 
+FROM viajes
 WHERE fecha BETWEEN '2024-01-01' AND '2024-03-31';
 
 
 -- Plan de Ejecución: Clustered Index Scan
--- Tiempo de Ejecución: 0.772s 
+-- Tiempo de Ejecución: 0.772s
 ```
 
 ##### Salida:
@@ -215,8 +232,7 @@ WHERE fecha BETWEEN '2024-01-01' AND '2024-03-31';
 #### Implementación de Índices
 
 - **Índice Agrupado en la Columna `fecha`**: Definir un índice agrupado sobre la columna fecha y repetir la consulta anterior.
-Registrar el plan de ejecución utilizado por el motor y los tiempos de respuesta.
-
+  Registrar el plan de ejecución utilizado por el motor y los tiempos de respuesta.
 
 ```sql
 -- Crear una copia de la tabla 'viajes' sin restricciones ni índices
@@ -226,13 +242,13 @@ FROM viajes;
 
 
 -- Crear un índice agrupado en la columna 'fecha' en la tabla 'viajes_sin_restricciones'
-CREATE CLUSTERED INDEX IX_fecha_viajes 
+CREATE CLUSTERED INDEX IX_fecha_viajes
 ON viajes_sin_restricciones(fecha);
 
 
 -- Filtrar registros por fecha en 'viajes_sin_restricciones'
 SELECT fecha, origen, destino, hora, precio, asientos_disponibles
-FROM viajes_sin_restricciones 
+FROM viajes_sin_restricciones
 WHERE fecha BETWEEN '2024-01-01' AND '2024-03-31';
 
 
@@ -243,10 +259,9 @@ WHERE fecha BETWEEN '2024-01-01' AND '2024-03-31';
 ##### Salida:
 
 ![Captura de pantalla (155)](https://github.com/user-attachments/assets/92cc1d78-a153-4933-a273-91a6b20fab4c)
-  
-- **Índice Agrupado con Múltiples Columnas**: Definir otro índice agrupado sobre la columna 'fecha' en la tabla 'viajes' que además incluya las columnas seleccionadas 
-y repetir la consulta anterior. Registrar el plan de ejecución utilizado por el motor y los tiempos de respuesta.
 
+- **Índice Agrupado con Múltiples Columnas**: Definir otro índice agrupado sobre la columna 'fecha' en la tabla 'viajes' que además incluya las columnas seleccionadas
+  y repetir la consulta anterior. Registrar el plan de ejecución utilizado por el motor y los tiempos de respuesta.
 
 ```sql
 CREATE CLUSTERED INDEX IX_fecha_viajes
@@ -255,7 +270,7 @@ ON viajes_sin_restricciones (fecha, origen, destino, hora, precio, asientos_disp
 
 -- Repetir la consulta para observar los cambios en el plan de ejecución y tiempo de respuesta
 SELECT fecha, origen, destino, hora, precio, asientos_disponibles
-FROM viajes_sin_restricciones 
+FROM viajes_sin_restricciones
 WHERE fecha BETWEEN '2024-01-01' AND '2024-03-31';
 
 
@@ -265,10 +280,21 @@ WHERE fecha BETWEEN '2024-01-01' AND '2024-03-31';
 
 ##### Salida
 
-![Captura de pantalla (156)](https://github.com/user-attachments/assets/ac6658c2-7013-4768-95ac-9033eeab8fd6)
+![Captura de pantalla (156)](https://github.com/user-attachments/assets/ac6658c2-7013-4768-95ac-9033eeab8fd6) 4. **TEMA 1: MANEJO DE PERMISOS A NIVEL DE USUARIOS DE BASE**
+
+### Configuración de Permisos a Nivel de Usuario
+
+Al intentar realizar una operación de inserción directa con el usuario de solo lectura, se observó que este no tenía autorización debido a sus restricciones.
+Se confirmó la efectividad de los permisos a nivel de usuario para limitar el acceso a datos críticos y mantener la integridad de los datos.
+
+### Implementación y Comportamiento de Roles de Lectura
+
+Se creó un rol llamado “SoloLecturaViajes”, el cual solo tiene permisos de lectura sobre la tabla "viajes".
+Este rol se asignó a un usuario específico (UsuarioLector), y se verificó su acceso comparándolo con otro usuario sin asignación de rol.
+Se observó que el usuario asignado al rol de “SoloLecturaViajes” pudo realizar consultas a la tabla, mientras que el usuario sin este rol fue denegado al intentar ejecutar la misma consulta.
 
 4. **TEMA 2: PROCEDIMIENTOS Y FUNCIONES ALMACENADAS**:
-La implementación de procedimientos y funciones almacenadas en Viajate es fundamental para mantener una plataforma eficiente, segura y capaz de manejar operaciones complejas de manera estructurada. Estas herramientas permiten encapsular la lógica de negocio directamente en la base de datos, lo cual facilita la gestión de transacciones, reduce el margen de error en las operaciones y asegura la consistencia de los datos.
+   La implementación de procedimientos y funciones almacenadas en Viajate es fundamental para mantener una plataforma eficiente, segura y capaz de manejar operaciones complejas de manera estructurada. Estas herramientas permiten encapsular la lógica de negocio directamente en la base de datos, lo cual facilita la gestión de transacciones, reduce el margen de error en las operaciones y asegura la consistencia de los datos.
 
 Procedimientos Almacenados en Viajate
 Los procedimientos almacenados en SQL Server son conjuntos de instrucciones SQL que se guardan y ejecutan en el servidor. En Viajate, los procedimientos almacenados se utilizan para gestionar operaciones clave que requieren un control riguroso, como la creación y eliminación de usuarios, la gestión de reservas y la administración de viajes. Estos procedimientos permiten que todas las operaciones se realicen de forma segura y eficiente, al reducir la interacción directa con las tablas y centralizar la lógica de negocio.
@@ -311,14 +337,18 @@ Comparación entre Procedimientos y Funciones
 
 ![alt text](image-4.png)
 
-
 ## CAPÍTULO V: CONCLUSIONES
+
+### **TEMA 1: MANEJO DE PERMISOS A NIVEL DE USUARIOS DE BASE**
+
+En la administración de la base de datos, es una muy buena práctica la implementación de permisos y roles para asegurar el acceso controlado a los datos y proteger la integridad de la información almacenada.
+Asignar permisos puntuales a nivel de usuario permite controlar actividades específicas, mientras que los roles simplifican o “generalizan” la gestión de permisos en entornos con múltiples usuarios.
 
 ### **TEMA 3: Optimizacion de consultas a traves de indices**:
 
 #### Análisis de los Resultados
 
-El análisis detallado de los planes de ejecución reveló que el uso de índices *clustered* y *nonclustered*, así como de índices compuestos, mejoró sustancialmente la rapidez de las consultas de búsqueda y filtrado. No obstante, se observó que el incremento en la cantidad de índices tuvo un impacto en las operaciones de modificación (`INSERT`, `DELETE`, `UPDATE`), lo cual es una consideración importante al equilibrar el rendimiento de consultas con la eficiencia de las operaciones de actualización.
+El análisis detallado de los planes de ejecución reveló que el uso de índices _clustered_ y _nonclustered_, así como de índices compuestos, mejoró sustancialmente la rapidez de las consultas de búsqueda y filtrado. No obstante, se observó que el incremento en la cantidad de índices tuvo un impacto en las operaciones de modificación (`INSERT`, `DELETE`, `UPDATE`), lo cual es una consideración importante al equilibrar el rendimiento de consultas con la eficiencia de las operaciones de actualización.
 
 #### Evaluación del Cumplimiento de los Objetivos
 
@@ -330,8 +360,7 @@ La optimización de consultas mediante índices es una herramienta poderosa en l
 
 En conclusión, los hallazgos de este trabajo confirman la efectividad de las técnicas de optimización mediante índices en la mejora del rendimiento de consultas y subrayan la relevancia de una evaluación constante para ajustar y mantener la eficiencia en el manejo de datos. Estos resultados sientan las bases para futuras mejoras y adaptaciones en sistemas de información que requieran manejar datos a gran escala.
 
-
-****TEMA 4: "Procedimientos y Funciones Almacenadas en Viajate"****
+\***\*TEMA 4: "Procedimientos y Funciones Almacenadas en Viajate"\*\***
 La implementación de procedimientos y funciones almacenadas en Viajate ha sido un tema de análisis, considerando su potencial para mejorar la eficiencia y seguridad en la gestión de datos críticos. Estas herramientas permiten encapsular la lógica de negocio directamente en la base de datos, centralizando operaciones complejas como la gestión de usuarios y reservas. En teoría, los procedimientos y funciones almacenadas ofrecen ventajas significativas en rendimiento y seguridad, especialmente al reducir el tráfico de red y al limitar el acceso directo a las tablas, proporcionando una capa adicional de control en el servidor.
 
 Sin embargo, en el contexto de Viajate, que actualmente utiliza un ORM para gestionar las consultas, surgen algunas dudas sobre si esta metodología es la más adecuada. Viajate es una aplicación en constante evolución, con un equipo de trabajo distribuido y cambios frecuentes en la lógica de negocio. La implementación de procedimientos y funciones almacenadas puede plantear desafíos en cuanto a la flexibilidad y la colaboración, ya que centralizar la lógica en el servidor puede dificultar el mantenimiento y la actualización continua en un entorno de desarrollo ágil y distribuido.
@@ -342,7 +371,7 @@ En conclusión, aunque el uso de procedimientos y funciones almacenadas ofrece b
 
 En esta primera entrega del trabajo final, hemos logrado aplicar los conocimientos adquiridos en la asignatura Bases de Datos I al proyecto **Viajate**, una plataforma diseñada para facilitar la organización de viajes compartidos entre usuarios. A través de este proceso, hemos podido optimizar y mejorar la estructura de nuestra base de datos, lo cual es clave para el funcionamiento eficiente de la aplicación.
 
-**Viajate** está estructurada para gestionar varios aspectos esenciales del sistema de viajes compartidos, basados en el modelo entidad-relación presentado. 
+**Viajate** está estructurada para gestionar varios aspectos esenciales del sistema de viajes compartidos, basados en el modelo entidad-relación presentado.
 Gracias a estas mejoras en la estructura de la base de datos, **Viajate** está mejor preparada para manejar la complejidad de los viajes compartidos y ofrecer a sus usuarios una plataforma más organizada y eficiente. La normalización de las tablas y la correcta relación entre las entidades aseguran que el sistema pueda crecer de manera escalable, manteniendo un alto nivel de rendimiento.
 
 ---
