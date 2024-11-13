@@ -50,6 +50,57 @@ El desarrollo de Viajate como un sistema de gestión de viajes compartidos requi
 1. **Manejo de Json en sql**: Importancia de reducir el uso individual de vehículos y promover opciones compartidas.
 2. **Permisos y Roles**: Conceptos clave para el diseño de bases de datos eficientes y seguras.
 3. **Optimizacion de consultas atraves de indices**: Metodologías y buenas prácticas para el diseño de APIs RESTful con Golang.
+4. **Procedimientos y funciones almacenadas**: 
+    En el contexto de una aplicación de viajes compartidos como Viajate, la implementación de procedimientos y funciones almacenadas en la base de datos aporta una capa fundamental de eficiencia, control y seguridad en la gestión de datos. Estos elementos se convierten en pilares de la lógica de negocio, permitiendo la centralización de operaciones en el servidor de la base de datos y proporcionando ventajas específicas que optimizan tanto el rendimiento como la integridad del sistema.
+
+    Procedimientos Almacenados en Bases de Datos
+    Los procedimientos almacenados son conjuntos de instrucciones SQL almacenados en el servidor que ejecutan operaciones complejas, como el registro y actualización de usuarios o la creación de reservas de viaje. En Viajate, su utilización se enfoca en tareas críticas que requieren asegurar la consistencia y la seguridad de los datos en cada transacción.
+
+    La centralización de la lógica de negocio en procedimientos almacenados en el servidor permite que la aplicación Viajate mantenga un flujo constante y seguro de datos, reduciendo el margen de error y evitando accesos directos a las tablas. Los procedimientos almacenados también ayudan a minimizar el tráfico de red, ya que las operaciones se ejecutan directamente en el servidor, lo que resulta en un rendimiento optimizado al manejar grandes volúmenes de datos.
+
+    Funciones Almacenadas en Bases de Datos
+    Las funciones almacenadas permiten realizar cálculos y transformaciones sobre los datos, devolviendo un valor específico que puede ser reutilizado en distintas consultas. En Viajate, las funciones almacenadas facilitan cálculos como la cantidad de reservas realizadas por un usuario o el cálculo de la edad de un usuario según su fecha de nacimiento. Estas funciones, al ejecutarse en el servidor, optimizan la eficiencia del sistema al reducir la carga de procesamiento en el cliente, integrándose en las consultas SQL de forma flexible y consistente.
+
+    Las funciones almacenadas en Viajate contribuyen significativamente a la personalización y generación de estadísticas dentro del sistema. Al encapsular operaciones específicas, las funciones almacenadas aseguran que las consultas y cálculos se realicen de manera uniforme y con coherencia, mejorando la experiencia del usuario final sin comprometer la seguridad de los datos.
+---
+
+## CAPÍTULO III: METODOLOGÍA SEGUIDA
+
+### Descripción de cómo se realizó el Trabajo Práctico
+El desarrollo de la plataforma **Viajate** se centró en el diseño y creación del backend utilizando Golang como lenguaje de programación y MySQL como sistema de gestión de bases de datos. Se trabajó en diferentes fases:
+
+1. **Definición de Requisitos**: Identificación de las necesidades de los usuarios y las funcionalidades clave que debía cubrir la plataforma.
+2. **Diseño de la Arquitectura**: Estructuración del sistema mediante el uso de una base de datos relacional con MySQL y la creación de APIs RESTful con Golang.
+3. **Desarrollo del Backend**: Implementación de funcionalidades clave como el registro de usuarios, creación de viajes y mensajería interna.
+
+### Herramientas Utilizadas
+- **Golang**: Lenguaje de programación eficiente para la creación de APIs.
+- **MySQL**: Sistema de gestión de bases de datos relacional.
+- **Postman**: Herramienta para probar y documentar las APIs desarrolladas.
+- **Cursos en línea y ChatGPT**: Fuentes de conocimiento que permitieron adquirir las habilidades necesarias para el desarrollo del backend, complementando con ejemplos y asistencia técnica.
+- **Google Forms**: Herramienta utilizada para realizar encuestas y recopilar datos de usuarios potenciales sobre sus necesidades de movilidad.
+
+---
+
+## CAPÍTULO IV: DESARROLLO DEL TEMA / PRESENTACIÓN DE RESULTADOS
+
+### Optimización de Consultas en la Base de Datos
+
+#### Descripción del Conjunto de Datos
+Se trabajó con la tabla `viajes`, diseñada para almacenar información clave sobre los viajes compartidos en **Viajate**. Las columnas principales incluyen `usuarios_id`, `vehiculo_id`, `origen`, `destino`, `fecha`, `hora`, `precio` y `asientos_disponibles`.
+
+#### Carga Masiva de Datos
+Para realizar pruebas de rendimiento y optimización, se realizó una carga masiva de un millón de registros en la tabla `viajes`, con datos generados de manera secuencial y aleatoria. Este proceso permitió obtener un conjunto de datos adecuado para medir la eficiencia de las consultas.
+
+#### Evaluación Inicial de la Consulta sin Índices
+Se realizó una consulta inicial en la tabla `viajes` sin índices, buscando registros entre el 1 de enero y el 31 de marzo de 2024. El plan de ejecución mostró un *Clustered Index Scan*, con un tiempo de respuesta de aproximadamente 0.247 segundos, lo cual sirvió como punto de referencia.
+
+#### Implementación de Índices
+
+- **Índice Agrupado en la Columna `fecha`**: Al crear un índice agrupado en la columna `fecha`, el plan de ejecución cambió a un *Clustered Index Seek* y el tiempo de respuesta mejoró a 0.156 segundos. Esto demostró la efectividad de un índice en la optimización de consultas por rango de fechas.
+  
+- **Índice Agrupado con Múltiples Columnas**: Para optimizar aún más, se añadió un índice agrupado en las columnas `fecha`, `origen`, `destino`, `hora`, `precio` y `asientos_disponibles`. Esto permitió reducir el tiempo de respuesta a 0.150 segundos y facilitó el acceso a múltiples columnas en una única consulta.
+
 4. **TEMA 2: PROCEDIMIENTOS Y FUNCIONES ALMACENADAS**:
 La implementación de procedimientos y funciones almacenadas en Viajate es fundamental para mantener una plataforma eficiente, segura y capaz de manejar operaciones complejas de manera estructurada. Estas herramientas permiten encapsular la lógica de negocio directamente en la base de datos, lo cual facilita la gestión de transacciones, reduce el margen de error en las operaciones y asegura la consistencia de los datos.
 
@@ -322,6 +373,13 @@ Las capacidades de SQL Server para manejar datos JSON enriquecen la funcionalida
 ---
 
 ## CAPÍTULO V: CONCLUSIONES
+
+****TEMA 2: "Procedimientos y Funciones Almacenadas en Viajate"****
+La implementación de procedimientos y funciones almacenadas en Viajate ha sido un tema de análisis, considerando su potencial para mejorar la eficiencia y seguridad en la gestión de datos críticos. Estas herramientas permiten encapsular la lógica de negocio directamente en la base de datos, centralizando operaciones complejas como la gestión de usuarios y reservas. En teoría, los procedimientos y funciones almacenadas ofrecen ventajas significativas en rendimiento y seguridad, especialmente al reducir el tráfico de red y al limitar el acceso directo a las tablas, proporcionando una capa adicional de control en el servidor.
+
+Sin embargo, en el contexto de Viajate, que actualmente utiliza un ORM para gestionar las consultas, surgen algunas dudas sobre si esta metodología es la más adecuada. Viajate es una aplicación en constante evolución, con un equipo de trabajo distribuido y cambios frecuentes en la lógica de negocio. La implementación de procedimientos y funciones almacenadas puede plantear desafíos en cuanto a la flexibilidad y la colaboración, ya que centralizar la lógica en el servidor puede dificultar el mantenimiento y la actualización continua en un entorno de desarrollo ágil y distribuido.
+
+En conclusión, aunque el uso de procedimientos y funciones almacenadas ofrece beneficios técnicos en rendimiento y seguridad, su implementación en Viajate debe ser evaluada cuidadosamente. Dado el ritmo de cambios y la colaboración remota en el proyecto, el enfoque actual mediante ORM sigue siendo una metodología adecuada, ya que permite una mayor flexibilidad y facilita la gestión conjunta de los cambios en el código. A medida que la aplicación madure y las necesidades de rendimiento se estabilicen, se podría considerar la implementación de lógica almacenada para ciertas operaciones clave, equilibrando así la eficiencia con la capacidad de adaptación del sistema.
 
 **Viajate** es una plataforma digital diseñada para facilitar la organización de viajes compartidos entre usuarios, promoviendo la movilidad sostenible y la reducción de costos de transporte. Desarrollada por los cuatro integrantes de este proyecto —César Huici, Emilio Barrios, Francisco Leiva y Diego Gauto—, la aplicación surgió como una respuesta a la falta de soluciones eficientes para coordinar trayectos compartidos entre personas que realizan viajes similares. Al ser un proyecto en el que hemos estado trabajando activamente, elegimos **Viajate** como el tema de estudio para la asignatura Bases de Datos I, con el objetivo de mejorar su funcionalidad y optimizar la base de datos que sustenta su operación.
 
