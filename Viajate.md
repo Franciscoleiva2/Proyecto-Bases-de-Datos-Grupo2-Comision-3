@@ -39,16 +39,27 @@ El problema identificado es la falta de una plataforma centralizada que permita 
   - Desarrollar un backend robusto que permita la gestión de usuarios, viajes y solicitudes.
   - Optimizar la base de datos para un almacenamiento eficiente y seguro de la información.
   - Implementar funcionalidades que faciliten la creación y gestión de viajes compartidos.
+  - Mejorar una base de datos ya creada en la aplicacion.
 
 ---
 
 ## CAPÍTULO II: MARCO CONCEPTUAL O REFERENCIAL
 
-En este capítulo se presenta el marco conceptual que sustenta el desarrollo de la aplicación, basándose en las tecnologías actuales y en la importancia de la movilidad sostenible. Se explorarán temas como:
+El desarrollo de Viajate como un sistema de gestión de viajes compartidos requiere la implementación de funcionalidades esenciales que garantizan la eficiencia, seguridad y adaptabilidad del sistema a las diversas necesidades de sus usuarios. Al ser una plataforma destinada a coordinar trayectos compartidos, Viajate debe ofrecer un diseño robusto que permita el manejo seguro de información personal, la optimización de consultas para un acceso ágil a los datos, y la flexibilidad necesaria para adaptarse a diferentes patrones de uso. A continuación, se presentan los aspectos clave que guían su diseño.
 
-1. **Movilidad Sostenible**: Importancia de reducir el uso individual de vehículos y promover opciones compartidas.
-2. **Bases de Datos Relacionales**: Conceptos clave para el diseño de bases de datos eficientes y seguras.
-3. **Desarrollo de APIs**: Metodologías y buenas prácticas para el diseño de APIs RESTful con Golang.
+1. **Manejo de Json en sql**: Importancia de reducir el uso individual de vehículos y promover opciones compartidas.
+2. **Permisos y Roles**: Conceptos clave para el diseño de bases de datos eficientes y seguras.
+3. **Optimizacion de consultas atraves de indices**: Metodologías y buenas prácticas para el diseño de APIs RESTful con Golang.
+4. **TEMA 2: PROCEDIMIENTOS Y FUNCIONES ALMACENADAS**:
+En Viajate, los procedimientos y funciones almacenadas son componentes clave para realizar operaciones de forma estructurada y controlada. Estos elementos nos permiten encapsular la lógica de negocio directamente en el servidor de base de datos, lo que garantiza una mayor seguridad y consistencia en las operaciones.
+
+Procedimientos Almacenados en Viajate
+En Viajate, los procedimientos almacenados se utilizan para gestionar operaciones críticas, como la creación, modificación y eliminación de usuarios. Esto permite centralizar las operaciones y minimizar errores, asegurando que todas las modificaciones sigan una misma lógica.
+
+El procedimiento InsertarUsuario permite registrar un nuevo usuario en la base de datos, verificando previamente que el correo electrónico no esté duplicado. Esto asegura que no haya correos repetidos en la plataforma y mantiene la integridad de los datos.
+
+![alt text](image.png)
+
 
 ---
 
