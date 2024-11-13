@@ -82,16 +82,33 @@ En este capítulo se detallan los resultados obtenidos a lo largo del desarrollo
 
 ### Temas Desarrollados
 
-1. **Gestión de Usuarios**: La plataforma permite que los usuarios se registren y gestionen sus perfiles a través de la entidad usuarios, que almacena información básica como nombre, correo electrónico y contraseñas. Además, mediante la tabla usuarios_detalle, se guarda información adicional como género, fecha de nacimiento y términos aceptados, mejorando la personalización de la plataforma.
+Procedimientos y Funciones Almacenadas en Viajate
+Los procedimientos y funciones almacenadas son elementos clave en Viajate para gestionar de forma eficiente y segura las operaciones de la base de datos, encapsulando la lógica de negocio directamente en el servidor.
 
-2. **Viajes y su Detalle**: La entidad viajes se utiliza para gestionar los trayectos creados por los usuarios, almacenando información clave como el origen, destino, fecha, hora y precio del viaje. El detalle adicional de cada viaje, como la disponibilidad de asientos, equipaje y si se aceptan mascotas, se gestiona a través de la entidad viajes_detalle.
+Procedimientos Almacenados
+Los procedimientos almacenados agrupan instrucciones SQL que ejecutan operaciones CRUD de manera eficiente y controlada. Algunos ejemplos:
 
-3. **Solicitudes de Viaje**: Los usuarios pueden enviar solicitudes para unirse a un viaje mediante la entidad solicitudes, la cual guarda el estado de la solicitud (notificado, aceptado) y relaciona a los usuarios con los viajes.
+InsertarUsuario: Valida la unicidad del correo antes de registrar un nuevo usuario, asegurando la integridad de los datos.
+ModificarUsuario: Permite actualizar la información de un usuario tras verificar su existencia, evitando modificaciones no válidas.
+BorrarUsuario: Elimina un usuario y sus datos dependientes, garantizando la consistencia de la base de datos al borrar en cascada.
+Ventajas:
 
-4. **Comunidades y Viajes Recurrentes**: Uno de los grandes avances logrados durante esta etapa fue la incorporación de la entidad comunidad, que permite a los usuarios formar grupos o pertenecer a comunidades (por ejemplo, empleados de una empresa o estudiantes de una universidad). Esto facilita la creación de viajes compartidos entre personas que tienen un vínculo en común. Además, la nueva entidad viajes_rutina permite la planificación de viajes recurrentes o programados, lo cual es ideal para usuarios que realizan el mismo trayecto de forma regular, como ir al trabajo o a la universidad.
+Mejoran el rendimiento al ejecutar la lógica en el servidor.
+Aumentan la seguridad al limitar el acceso directo a las tablas.
+Facilitan el mantenimiento al centralizar la lógica de negocio.
+Funciones Almacenadas
+Las funciones almacenadas devuelven valores específicos y son útiles para cálculos en consultas SQL, como:
 
-5. **Gestión de Combustibles**: También se ha incorporado la entidad combustibles, que en futuras etapas permitirá calcular los costos de los viajes en función del tipo de combustible utilizado, añadiendo más precisión a la gestión de costos para los conductores.
+CalcularEdad: Calcula la edad de un usuario, útil en reportes.
+CantidadReservasUsuario: Cuenta las reservas de un usuario, ideal para estadísticas.
+PrecioPromedioViajesUsuario: Calcula el precio promedio de los viajes de un usuario.
+Ventajas:
 
+Permiten cálculos reutilizables en consultas sin duplicar código.
+Mejoran la eficiencia al ejecutar cálculos directamente en SQL.
+Simplifican filtrados y cálculos personalizados.
+Impacto en Viajate
+La combinación de procedimientos y funciones en Viajate mejora la eficiencia, seguridad y mantenibilidad del sistema, garantizando una gestión de datos robusta y optimizada para consultas y reportes, esenciales en una plataforma de viajes compartidos.
 ---
 
 ## CAPÍTULO V: CONCLUSIONES
