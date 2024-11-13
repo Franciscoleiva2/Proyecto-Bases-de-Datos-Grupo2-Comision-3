@@ -1,7 +1,7 @@
 -- CREATE DATABASE viajate;
-CREATE DATABASE viajate;
+--CREATE DATABASE viajate_t;
 
-USE viajate;
+USE viajate_t;
 GO
 
 -- Tabla: usuarios

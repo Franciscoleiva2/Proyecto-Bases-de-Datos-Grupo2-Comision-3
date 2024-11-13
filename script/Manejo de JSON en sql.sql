@@ -1,102 +1,97 @@
-USE viajate;
 
-/* Eliminar la tabla si existe (para propósitos de prueba). No usar en producción. */
-DROP TABLE IF EXISTS viajes_metadata;
+-- Crear la base de datos
+CREATE DATABASE viajate_t;
+GO
 
--- Crear la tabla viajes_metadata con columna JSON
-CREATE TABLE viajes_metadata (
-    id INT IDENTITY(1,1) PRIMARY KEY,
-    viaje_id INT NOT NULL,
-    metadata NVARCHAR(MAX) NOT NULL, -- Almacenará datos JSON
-    CONSTRAINT FK_viaje FOREIGN KEY (viaje_id) REFERENCES viajes(id)
+USE viajate_t;
+GO
+
+
+
+-- Crear la tabla de datos adicionales con una columna JSON
+CREATE TABLE datos_adicionales (
+    id INT PRIMARY KEY IDENTITY(1,1),
+    usuarios_id INT NOT NULL,
+    datos NVARCHAR(MAX) CHECK (ISJSON(datos) > 0), -- Columna JSON con validación
+    CONSTRAINT FK_datos_adicionales_usuarios FOREIGN KEY (usuarios_id) REFERENCES usuarios(id)
 );
 
--- Verificar la estructura de la tabla
-SELECT * FROM viajes_metadata;
-
--- Insertar varios datos JSON en la tabla
-INSERT INTO viajes_metadata (viaje_id, metadata)
+-- Insertar datos en formato JSON
+INSERT INTO datos_adicionales (usuarios_id, datos)
 VALUES 
-(1, '{
-    "ModeloDeVehiculo": "Toyota Corolla",
-    "clima": "soleado",
-    "duracion": "3 horas",
-    "paradas": ["Parada 1", "Parada 2"],
-    "comentarios": ["Excelente conductor", "Muy cómodo"]
-}'),
-(2, '{
-    "ModeloDeVehiculo": "Honda Civic",
-    "clima": "lluvioso",
-    "duracion": "4 horas",
-    "paradas": ["Parada 3"],
-    "comentarios": ["Conductor puntual", "Auto limpio"]
-}'),
-(3, '{
-    "ModeloDeVehiculo": "Ford Fiesta",
-    "clima": "nublado",
-    "duracion": "2 horas",
-    "paradas": ["Parada A", "Parada B", "Parada C"],
-    "comentarios": ["Conducción suave", "Amable con los pasajeros"]
-}'),
-(4, '{
-    "ModeloDeVehiculo": "Chevrolet Spark",
-    "clima": "ventoso",
-    "duracion": "1.5 horas",
-    "paradas": ["Parada X"],
-    "comentarios": ["Coche pequeño pero cómodo", "Buen manejo"]
-}');
+(1, N'{"hobbies": ["fútbol", "leer"], "preferencias": {"música": "rock", "comida": "italiana"}}'),
+(2, N'{"hobbies": ["correr", "cocinar"], "preferencias": {"música": "pop", "comida": "mexicana"}}'),
+(3, N'{"hobbies": ["fotografía", "natación"], "preferencias": {"música": "jazz", "comida": "francesa"}}'),
+(4, N'{"hobbies": ["pintura", "senderismo"], "preferencias": {"música": "clásica", "comida": "china"}}'),
+(5, N'{"hobbies": ["escalar", "videojuegos"], "preferencias": {"música": "electrónica", "comida": "americana"}}');
 
--- Cambiar el clima de varios viajes
-UPDATE viajes_metadata
-SET metadata = JSON_MODIFY(metadata, '$.clima', 'nublado')
-WHERE viaje_id IN (1, 2);
+-- Actualizar un valor dentro del JSON
+UPDATE datos_adicionales
+SET datos = JSON_MODIFY(datos, '$.preferencias.comida', 'japonesa')
+WHERE usuarios_id = 1;
 
--- Agregar un comentario adicional en algunos viajes
-UPDATE viajes_metadata
-SET metadata = JSON_MODIFY(metadata, '$.comentarios[2]', 'Buena relación calidad-precio')
-WHERE viaje_id IN (3, 4);
+-- Agregar un nuevo campo al JSON existente
+UPDATE datos_adicionales
+SET datos = JSON_MODIFY(datos, '$.preferencias.deporte', 'tenis')
+WHERE usuarios_id = 1;
 
--- Verificar las actualizaciones
-SELECT * FROM viajes_metadata;
+-- Agregar otro campo en diferentes usuarios
+UPDATE datos_adicionales
+SET datos = JSON_MODIFY(datos, '$.preferencias.libros', 'novelas')
+WHERE usuarios_id = 2;
 
--- Eliminar el campo "duracion" del JSON en un viaje específico
-UPDATE viajes_metadata
-SET metadata = JSON_MODIFY(metadata, '$.duracion', NULL)
-WHERE viaje_id = 1;
+UPDATE datos_adicionales
+SET datos = JSON_MODIFY(datos, '$.preferencias.bebida', 'vino tinto')
+WHERE usuarios_id = 3;
 
--- Eliminar un registro completo (con viaje_id = 4)
-DELETE FROM viajes_metadata
-WHERE viaje_id = 4;
+-- Eliminar una propiedad del JSON
+UPDATE datos_adicionales
+SET datos = JSON_MODIFY(datos, 'delete $.preferencias.música')
+WHERE usuarios_id = 1;
 
--- Extraer el valor de "clima" en metadata para un viaje específico
-SELECT JSON_VALUE(metadata, '$.clima') AS clima
-FROM viajes_metadata
-WHERE viaje_id = 2;
+-- Consultar un valor específico dentro del JSON
+SELECT JSON_VALUE(datos, '$.preferencias.comida') AS ComidaPreferida
+FROM datos_adicionales
+WHERE usuarios_id = 1;
 
--- Convertir todos los resultados de viaje en JSON
-SELECT viaje_id, metadata
-FROM viajes_metadata
-FOR JSON AUTO;
+-- Consultar varios valores JSON al mismo tiempo
+SELECT 
+    JSON_VALUE(datos, '$.hobbies[0]') AS PrimerHobby,
+    JSON_VALUE(datos, '$.preferencias.comida') AS ComidaPreferida
+FROM datos_adicionales;
 
--- Consultar con JOIN a la tabla viajes
-SELECT v.id AS viaje_id, v.origen, v.destino, vm.metadata
-FROM viajes v
-JOIN viajes_metadata vm ON v.id = vm.viaje_id
-FOR JSON AUTO;
+-- Filtrar registros en función de un valor JSON
+SELECT usuarios_id
+FROM datos_adicionales
+WHERE JSON_VALUE(datos, '$.preferencias.comida') = 'mexicana';
 
--- Extraer el array "comentarios" para cada viaje
-SELECT vm.viaje_id, comentario.value AS comentario
-FROM viajes_metadata vm
-CROSS APPLY OPENJSON(metadata, '$.comentarios') AS comentario;
+-- Crear una columna calculada e indexarla para optimizar consultas
+ALTER TABLE datos_adicionales
+ADD comida_preferida AS JSON_VALUE(datos, '$.preferencias.comida');
 
--- Crear una columna calculada persistente para "clima"
-ALTER TABLE viajes_metadata
-ADD clima AS CAST(JSON_VALUE(metadata, '$.clima') AS NVARCHAR(100)) PERSISTED;
+CREATE INDEX idx_comida_preferida ON datos_adicionales (comida_preferida);
 
--- Crear un índice para mejorar consultas de "clima"
-CREATE INDEX idx_clima_viaje
-ON viajes_metadata (clima);
+-- Eliminar un registro específico de datos adicionales
+DELETE FROM datos_adicionales
+WHERE usuarios_id = 4;
 
--- Verificar la estructura final de la tabla
-SELECT * FROM viajes_metadata;
+-- Seleccionar todos los registros para revisar la estructura final de datos adicionales
+SELECT * FROM datos_adicionales;
 
+
+/*
+
+
+
+Conclusión 
+
+El uso de JSON en SQL Server permite almacenar datos no estructurados y flexibles sin necesidad de un esquema fijo, 
+lo cual es ideal para aplicaciones que manejan datos variables. SQL Server proporciona funciones específicas como `JSON_VALUE` y `JSON_MODIFY`,
+que facilitan el acceso y modificación de estos datos
+Sin embargo, a diferencia de bases de datos NoSQL, el rendimiento y la optimización de consultas JSON en SQL Server son limitados,
+MongoDB, ofrecen mejor rendimiento y flexibilidad para este tipo de operaciones.
+ Para mejorar el rendimiento, es recomendable usar columnas calculadas e indexarlas si se requiere consultar propiedades JSON con frecuencia.
+
+ JSON en SQL Server es útil como complemento en estructuras relacionales, pero no reemplaza un esquema relacional en consultas complejas y repetitivas. 
+ Para estos casos, una solución NoSQL puede ser más adecuada.
+*/
