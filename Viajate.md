@@ -338,39 +338,26 @@ Las funciones almacenadas devuelven valores específicos y son útiles para cál
 #### Impacto en `Viajate`
 La combinación de procedimientos y funciones almacenadas en **Viajate** mejora la eficiencia, seguridad y mantenibilidad del sistema. Estos elementos permiten una gestión de datos robusta, optimizada para consultas y reportes, lo cual es esencial en una plataforma que requiere de operaciones rápidas y seguras para satisfacer las necesidades de los usuarios de viajes compartidos.
 
+En este capítulo, se presentan los datos y métodos implementados en la base de datos de Viajate para gestionar información compleja y semiestructurada mediante JSON. Esto permitió almacenar detalles adicionales de cada viaje, como características y preferencias de los usuarios, de manera flexible y accesible.
 
-###TEMA: Manejo de tipos de datos JSON en el Proyecto de Gestión de Viajes
+Para cumplir con los objetivos del proyecto, se utilizó SQL Server, aprovechando sus capacidades para manejar datos en formato JSON. Esto permitió una estructura adaptable para almacenar datos variables en cada viaje sin necesidad de modificar el esquema general de la base de datos. La creación de una tabla viajes_datos con una columna JSON facilitó el almacenamiento de información de características adicionales, como el estado de "equipaje permitido", "mascotas permitidas", "opciones de fumar", y una lista de "paradas".
 
-¿Qué es JSON?
-JSON (JavaScript Object Notation) es un formato de datos ligero y fácil de leer utilizado para almacenar y transferir datos estructurados. Es muy común en aplicaciones web, ya que permite un intercambio eficiente de información entre el servidor y la interfaz de usuario. JSON organiza los datos en una estructura de clave-valor, lo que facilita su interpretación tanto por humanos como por sistemas de procesamiento automático.
+Implementación de la Columna JSON
+Se creó la tabla viajes_datos con una columna datos de tipo NVARCHAR(MAX) con validación JSON. Esta columna almacena los detalles adicionales de cada viaje en un formato fácil de interpretar por la aplicación y de manipular en el backend. Cada JSON contiene secciones como "caracteristicas" y "preferencias", que detallan configuraciones del viaje.
 
-¿Por qué utilizamos JSON en este proyecto?
-En este proyecto de gestión de viajes, JSON permite almacenar información adicional y no estructurada dentro de las tablas de una base de datos SQL Server. Aunque SQL es ideal para datos estructurados, el uso de JSON nos permite manejar datos semiestructurados que pueden variar entre registros, como las características detalladas de un viaje, preferencias de los usuarios, paradas de ruta, y más. Esto nos brinda flexibilidad sin la necesidad de modificar el esquema de la base de datos cada vez que se añade una nueva característica.
+Ejemplos de datos JSON insertados:
+![alt text](image-5.png)
+Consultas y Manipulación de Datos JSON
+JSON_VALUE y JSON_QUERY. Estas funciones permiten extraer valores específicos y estructuras JSON completas dentro de una columna JSON, respectivamente.
 
-JSON en SQL Server
-Aunque JSON no es una estructura de base de datos, SQL Server permite trabajar con datos en formato JSON. Podemos almacenar JSON en columnas de tipo NVARCHAR, ejecutar consultas sobre datos JSON específicos dentro de esas columnas y actualizar partes del JSON almacenado sin afectar el resto de la estructura. En este proyecto:
-
-Los datos JSON se almacenan en una columna dedicada en la tabla viajes_datos.
-
-La información de cada viaje, como paradas intermedias y preferencias de bebida, se guarda en JSON, manteniendo flexibilidad y adaptabilidad.
-
-Mediante el uso de columnas calculadas e índices en SQL Server, optimizamos las consultas sobre propiedades específicas en el JSON, como la preferencia de bebida.
-
-Ventajas de Usar JSON en el Proyecto
-
-Flexibilidad: Permite almacenar información variable de los viajes sin modificar la estructura de la base de datos.
-Compatibilidad con APIs y Frontend: JSON es un formato ideal para comunicarse con aplicaciones web y móviles, que consumen datos desde el backend en este formato.
-Escalabilidad: Podemos añadir nuevas propiedades dentro del JSON sin requerir cambios en las tablas o en la estructura general de la base de datos.
-Optimización en Consultas: Gracias al uso de columnas calculadas y la capacidad de indexar datos JSON específicos en SQL Server, logramos un rendimiento óptimo al consultar información de uso frecuente en el frontend.
-
-Conclusion
-JSON es un formato de intercambio de datos muy popular en el desarrollo web, especialmente útil en proyectos donde los datos pueden variar en estructura.
-Su naturaleza independiente del lenguaje permite el intercambio de datos entre diferentes sistemas, facilitando la comunicación entre el backend y frontend.
-En este proyecto de gestión de viajes, JSON proporciona una solución flexible y escalable para manejar detalles de los viajes, mientras SQL Server se encarga de almacenar y consultar datos de manera estructurada.
-Las capacidades de SQL Server para manejar datos JSON enriquecen la funcionalidad de nuestras aplicaciones, al combinar lo mejor de los datos estructurados y semiestructurados en un solo sistema.
+JSON_VALUE: Esta función permite recuperar valores simples, como texto, números o booleanos, desde una columna JSON. Es ideal para extraer datos individuales en un formato plano.
+![alt text](image-6.png)  
 
 
----
+Optimización mediante Columnas Calculadas e Índices
+Para optimizar el rendimiento de las consultas sobre datos JSON, se creó la columna calculada bebida_preferida, que extrae la preferencia de bebida de cada viaje. Luego, se agregó un índice a esta columna para mejorar el rendimiento en consultas frecuentes. Esto facilitó el acceso rápido a propiedades JSON específicas sin afectar la flexibilidad de almacenamiento.
+![alt text](image-7.png)
+
 
 ## CAPÍTULO V: CONCLUSIONES
 
@@ -388,6 +375,12 @@ En esta primera entrega del trabajo final, hemos logrado aplicar los conocimient
 **Viajate** está estructurada para gestionar varios aspectos esenciales del sistema de viajes compartidos, basados en el modelo entidad-relación presentado. 
 Gracias a estas mejoras en la estructura de la base de datos, **Viajate** está mejor preparada para manejar la complejidad de los viajes compartidos y ofrecer a sus usuarios una plataforma más organizada y eficiente. La normalización de las tablas y la correcta relación entre las entidades aseguran que el sistema pueda crecer de manera escalable, manteniendo un alto nivel de rendimiento.
 
+
+TEMA 4: "Manejo de Tipos de Datos JSON en Viajate"
+
+En Viajate, usar JSON en la base de datos ha permitido almacenar información adicional, como preferencias de viaje, de manera flexible y sin modificar la estructura de la base de datos. Esto es útil en una plataforma que cambia constantemente.
+
+Aunque JSON facilita esta flexibilidad, puede hacer que algunas consultas sean más lentas. Para mejorar el rendimiento, se agregaron índices y columnas calculadas en las propiedades JSON que se usan con más frecuencia. En resumen, el uso de JSON en Viajate permite manejar datos de forma flexible y eficiente, ayudando a que la plataforma siga creciendo y mejorando.
 ---
 
 ## BIBLIOGRAFÍA
