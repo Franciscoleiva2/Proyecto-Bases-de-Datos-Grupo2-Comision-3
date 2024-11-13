@@ -35,8 +35,8 @@ GRANT EXECUTE ON dbo.InsertarUsuario TO Emilio;
 	 Login con usuario ADMIN  --> Deberia funcionar correctamente.
 	 Login con usuario EMILIO --> Esto debería fallar por falta de permisos de escritura.
 */
-INSERT INTO usuarios (id, nombre, apellido, email, contraseña)
-VALUES (104,'Victor', 'Zaracho', 'victor.zaracho@hotmail.com', 'password1234');
+INSERT INTO usuarios (nombre, apellido, email, contraseña)
+VALUES ('Victor', 'Zaracho', 'victor.zaracho@hotmail.com', 'password1234');
 
 /* 
 	Realizar un INSERT a través del procedimiento almacenado con el usuario con permiso de solo lectura
