@@ -93,6 +93,31 @@ Las capacidades de SQL Server para manejar datos JSON enriquecen la funcionalida
     Las funciones almacenadas en Viajate contribuyen significativamente a la personalización y generación de estadísticas dentro del sistema. Al encapsular operaciones específicas, las funciones almacenadas aseguran que las consultas y cálculos se realicen de manera uniforme y con coherencia, mejorando la experiencia del usuario final sin comprometer la seguridad de los datos.
 ---
 
+## Optimizacion de consultas a través de indices
+
+---
+
+Este capítulo presenta los conceptos y referencias clave que sustentan la investigación y el desarrollo del tema de optimización de bases de datos. Los fundamentos teóricos aquí expuestos ayudan a entender las razones detrás de las técnicas de optimización aplicadas y sitúan el problema en el contexto de la eficiencia y rendimiento en sistemas de información. A continuación, se exponen los conceptos relevantes y un marco referencial sobre tecnologías de optimización de datos, su importancia en la era de la información, y las prácticas avanzadas utilizadas para mejorar el rendimiento de aplicaciones de alto volumen de datos.
+
+## Índices en Bases de Datos
+
+Los índices en bases de datos son estructuras auxiliares que optimizan el acceso a la información al reducir el tiempo de búsqueda de registros. Se comportan como un catálogo que permite localizar rápidamente un conjunto de datos específico sin tener que recorrer toda la tabla. Aunque aumentan la velocidad de consultas `SELECT`, pueden impactar negativamente en las operaciones de modificación de datos como `INSERT`, `DELETE` y `UPDATE`, ya que el índice debe mantenerse actualizado para reflejar los cambios en la tabla.
+
+### Tipos de Índices
+
+1. **Índice Clustered (Agrupado)**
+   - Organiza los datos físicamente en el disco según el orden de la clave de índice.
+   - Solo puede haber un índice *clustered* por tabla, ya que determina el orden físico de los datos.
+   - Ideal para consultas que involucran rangos de datos (por ejemplo, fechas), ya que los datos se almacenan de manera secuencial.
+   
+2. **Índice Nonclustered (No Agrupado)**
+   - Crea una copia ordenada del índice sin cambiar el orden físico de los datos.
+   - Permite múltiples índices *nonclustered* en una tabla, útiles para optimizar consultas específicas.
+   - Cada índice *nonclustered* contiene un puntero que hace referencia al registro original en la tabla.
+
+### Plan de Ejecución Estimado
+Es un análisis que muestra cómo el motor de la base de datos planea ejecutar una consulta antes de que esta se ejecute realmente. Este plan detalla los pasos y recursos que la base de datos utilizará para obtener los datos solicitados, como la selección de índices, operaciones de búsqueda (Index Seek), exploración (Index Scan), o combinación (Join), y el orden de las operaciones.
+
 ## CAPÍTULO III: METODOLOGÍA SEGUIDA
 
 ### Descripción de cómo se realizó el Trabajo Práctico
