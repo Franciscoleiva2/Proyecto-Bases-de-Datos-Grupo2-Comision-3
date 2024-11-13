@@ -1,1 +1,0 @@
-https://drawsql.app/teams/viajate/diagrams/viajate-v1

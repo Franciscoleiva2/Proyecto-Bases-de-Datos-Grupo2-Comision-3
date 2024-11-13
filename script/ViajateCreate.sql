@@ -1,7 +1,7 @@
 -- CREATE DATABASE viajate;
 --CREATE DATABASE viajate_t;
 
-USE viajate_t;
+USE viajate;
 GO
 
 -- Tabla: usuarios
@@ -88,20 +88,6 @@ CREATE TABLE viajes (
     CONSTRAINT FK_viajes_vehiculo FOREIGN KEY (vehiculo_id) REFERENCES vehiculos(id)
 );
 
--- Tabla: caracteristicas
-CREATE TABLE caracteristicas (
-    id INT PRIMARY KEY IDENTITY(1,1),
-    nombre VARCHAR(50) NOT NULL UNIQUE -- Ejemplo: "Mascotas permitidas", "Espacio para equipaje"
-);
-
--- Tabla: viajes_caracteristicas
-CREATE TABLE viajes_caracteristicas (
-    viajes_id INT NOT NULL,
-    caracteristica_id INT NOT NULL,
-    CONSTRAINT PK_viajes_caracteristicas PRIMARY KEY (viajes_id, caracteristica_id),
-    CONSTRAINT FK_viajes_caracteristicas_viaje FOREIGN KEY (viajes_id) REFERENCES viajes(id),
-    CONSTRAINT FK_viajes_caracteristicas_caracteristica FOREIGN KEY (caracteristica_id) REFERENCES caracteristicas(id)
-);
 
 -- Tabla: estados_reserva
 CREATE TABLE estados_reserva (
