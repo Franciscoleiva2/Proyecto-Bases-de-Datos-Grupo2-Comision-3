@@ -327,6 +327,17 @@ CalcularEdad: Calcula la edad de un usuario a partir de su fecha de nacimiento, 
 
 ![alt text](image-2.png)
 
+CantidadReservasUsuario: Cuenta el número de reservas realizadas por un usuario, proporcionando un dato estadístico relevante para su perfil.
+
+![alt text](image-3.png)
+
+Esta función devuelve la edad del usuario, lo que puede ser útil en diversas consultas y cálculos sin necesidad de realizar operaciones adicionales en el frontend.
+
+Comparación entre Procedimientos y Funciones
+
+![alt text](image-4.png)
+
+MANEJO DE JSON EN SQL 
 En este capítulo, se presentan los datos y métodos implementados en la base de datos de Viajate para gestionar información compleja y semiestructurada mediante JSON. Esto permitió almacenar detalles adicionales de cada viaje, como características y preferencias de los usuarios, de manera flexible y accesible.
 
 Para cumplir con los objetivos del proyecto, se utilizó SQL Server, aprovechando sus capacidades para manejar datos en formato JSON. Esto permitió una estructura adaptable para almacenar datos variables en cada viaje sin necesidad de modificar el esquema general de la base de datos. La creación de una tabla viajes_datos con una columna JSON facilitó el almacenamiento de información de características adicionales, como el estado de "equipaje permitido", "mascotas permitidas", "opciones de fumar", y una lista de "paradas".
@@ -347,15 +358,6 @@ Optimización mediante Columnas Calculadas e Índices
 Para optimizar el rendimiento de las consultas sobre datos JSON, se creó la columna calculada bebida_preferida, que extrae la preferencia de bebida de cada viaje. Luego, se agregó un índice a esta columna para mejorar el rendimiento en consultas frecuentes. Esto facilitó el acceso rápido a propiedades JSON específicas sin afectar la flexibilidad de almacenamiento.
 ![alt text](image-7.png)
 
-CantidadReservasUsuario: Cuenta el número de reservas realizadas por un usuario, proporcionando un dato estadístico relevante para su perfil.
-
-![alt text](image-3.png)
-
-Esta función devuelve la edad del usuario, lo que puede ser útil en diversas consultas y cálculos sin necesidad de realizar operaciones adicionales en el frontend.
-
-Comparación entre Procedimientos y Funciones
-
-![alt text](image-4.png)
 
 ## CAPÍTULO V: CONCLUSIONES
 
