@@ -12,7 +12,6 @@ CREATE TABLE usuarios (
     email VARCHAR(255) NOT NULL UNIQUE,
     contraseña VARCHAR(255) NOT NULL,
     fecha_registro DATE NOT NULL DEFAULT GETDATE(),
-    calificacion DECIMAL(2, 1) DEFAULT 5.0 -- Calificación promedio del usuario
 );
 
 -- Tabla: usuarios_detalles
