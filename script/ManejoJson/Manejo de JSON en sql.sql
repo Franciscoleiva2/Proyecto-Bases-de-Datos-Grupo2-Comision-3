@@ -1,10 +1,15 @@
 -- Tarea 1: Crear una nueva tabla con una columna JSON
+use viajate_t
+
 CREATE TABLE datos_adicionales (
     id INT PRIMARY KEY IDENTITY(1,1),
     usuarios_id INT NOT NULL,
     datos NVARCHAR(MAX) CHECK (ISJSON(datos) > 0), -- Columna JSON con validación
     CONSTRAINT FK_datos_adicionales_usuarios FOREIGN KEY (usuarios_id) REFERENCES usuarios(id)
 );
+
+
+--N  el valor como una cadena de caracteres Unicode.
 
 -- Tarea 2: Agregar un conjunto de datos no estructurados en formato JSON
 INSERT INTO datos_adicionales (usuarios_id, datos)
@@ -51,6 +56,7 @@ UPDATE datos_adicionales
 SET datos = JSON_MODIFY(datos, '$.preferencias.comida', 'japonesa')
 WHERE usuarios_id = 1;
 
+SELECT * FROM datos_adicionales where usuarios_id = 1
 -- Agregar un nuevo campo al JSON existente
 UPDATE datos_adicionales
 SET datos = JSON_MODIFY(datos, '$.preferencias.deporte', 'tenis')
