@@ -314,6 +314,23 @@ Comparación entre Procedimientos y Funciones
 
 ## CAPÍTULO V: CONCLUSIONES
 
+### **TEMA 3: Optimizacion de consultas a traves de indices**:
+
+#### Análisis de los Resultados
+
+El análisis detallado de los planes de ejecución reveló que el uso de índices *clustered* y *nonclustered*, así como de índices compuestos, mejoró sustancialmente la rapidez de las consultas de búsqueda y filtrado. No obstante, se observó que el incremento en la cantidad de índices tuvo un impacto en las operaciones de modificación (`INSERT`, `DELETE`, `UPDATE`), lo cual es una consideración importante al equilibrar el rendimiento de consultas con la eficiencia de las operaciones de actualización.
+
+#### Evaluación del Cumplimiento de los Objetivos
+
+Los objetivos principales del trabajo, que incluían mejorar la eficiencia de consultas en grandes volúmenes de datos y evaluar el impacto de los índices en el rendimiento, fueron alcanzados. La implementación de los índices permitió optimizar las consultas sin comprometer significativamente la usabilidad y la integridad de la base de datos, cumpliendo con los requisitos de eficiencia planteados al inicio del trabajo.
+
+#### Reflexión Final
+
+La optimización de consultas mediante índices es una herramienta poderosa en la gestión de bases de datos, especialmente en sistemas que manejan grandes volúmenes de información. Sin embargo, es necesario equilibrar cuidadosamente los beneficios de los índices en las consultas con el impacto en las operaciones de modificación. Esta experiencia resalta la importancia de un diseño de base de datos flexible y de pruebas continuas para adaptarse a las necesidades de rendimiento de la aplicación.
+
+En conclusión, los hallazgos de este trabajo confirman la efectividad de las técnicas de optimización mediante índices en la mejora del rendimiento de consultas y subrayan la relevancia de una evaluación constante para ajustar y mantener la eficiencia en el manejo de datos. Estos resultados sientan las bases para futuras mejoras y adaptaciones en sistemas de información que requieran manejar datos a gran escala.
+
+
 ****TEMA 4: "Procedimientos y Funciones Almacenadas en Viajate"****
 La implementación de procedimientos y funciones almacenadas en Viajate ha sido un tema de análisis, considerando su potencial para mejorar la eficiencia y seguridad en la gestión de datos críticos. Estas herramientas permiten encapsular la lógica de negocio directamente en la base de datos, centralizando operaciones complejas como la gestión de usuarios y reservas. En teoría, los procedimientos y funciones almacenadas ofrecen ventajas significativas en rendimiento y seguridad, especialmente al reducir el tráfico de red y al limitar el acceso directo a las tablas, proporcionando una capa adicional de control en el servidor.
 
