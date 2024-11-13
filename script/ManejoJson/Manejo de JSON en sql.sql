@@ -1,122 +1,69 @@
--- Tarea 1: Crear una nueva tabla con una columna JSON
-use viajate_t
+-- Tarea: Crear la tabla viajes_datos con una columna JSON
+USE viajate;
 
-CREATE TABLE datos_adicionales (
+CREATE TABLE viajes_datos (
     id INT PRIMARY KEY IDENTITY(1,1),
-    usuarios_id INT NOT NULL,
+    viajes_id INT NOT NULL,
     datos NVARCHAR(MAX) CHECK (ISJSON(datos) > 0), -- Columna JSON con validación
-    CONSTRAINT FK_datos_adicionales_usuarios FOREIGN KEY (usuarios_id) REFERENCES usuarios(id)
+    CONSTRAINT FK_viajes_datos_viaje FOREIGN KEY (viajes_id) REFERENCES viajes(id)
 );
 
-
---N  el valor como una cadena de caracteres Unicode.
-
--- Tarea 2: Agregar un conjunto de datos no estructurados en formato JSON
-INSERT INTO datos_adicionales (usuarios_id, datos)
+-- Tarea: Insertar datos JSON en la tabla viajes_datos
+INSERT INTO viajes_datos (viajes_id, datos)
 VALUES 
 (1, N'{
-    "hobbies": ["fútbol", "leer"],
+    "caracteristicas": {
+        "equipaje": "permitido",
+        "mascotas": "permitidas",
+        "fumar": "no permitido",
+        "paradas": [
+            "YPF 4 bocas",
+            "Estación Shell Avenida",
+            "Parador Ruta 3"
+        ]
+    },
     "preferencias": {
-        "música": "rock",
-        "comida": "italiana"
+        "bebida": "mate"
     }
 }'),
 (2, N'{
-    "hobbies": ["correr", "cocinar"],
+    "caracteristicas": {
+        "equipaje": "no permitido",
+        "mascotas": "no permitidas",
+        "fumar": "permitido",
+        "paradas": [
+            "Estación de Servicio Axion",
+            "Parada Centro Plaza"
+        ]
+    },
     "preferencias": {
-        "música": "pop",
-        "comida": "mexicana"
-    }
-}'),
-(3, N'{
-    "hobbies": ["fotografía", "natación"],
-    "preferencias": {
-        "música": "jazz",
-        "comida": "francesa"
-    }
-}'),
-(4, N'{
-    "hobbies": ["pintura", "senderismo"],
-    "preferencias": {
-        "música": "clásica",
-        "comida": "china"
-    }
-}'),
-(5, N'{
-    "hobbies": ["escalar", "videojuegos"],
-    "preferencias": {
-        "música": "electrónica",
-        "comida": "americana"
+        "bebida": "tereré"
     }
 }');
 
--- Tarea 3: Realizar operaciones de actualización en datos JSON
--- Actualizar un valor dentro del JSON
-UPDATE datos_adicionales
-SET datos = JSON_MODIFY(datos, '$.preferencias.comida', 'japonesa')
-WHERE usuarios_id = 1;
+-- Tarea: Consultar datos específicos en el JSON
 
---- convertir automáticamente los resultados de una consulta SQL en formato JSON
+-- Consultar una característica específica (Ejemplo: estado de "fumar" para un viaje específico)
+SELECT JSON_VALUE(datos, '$.caracteristicas.fumar') AS Fumar
+FROM viajes_datos
+WHERE viajes_id = 1;
+
+-- Consultar varias características JSON al mismo tiempo (Ejemplo: estado de "equipaje" y primera parada)
 SELECT 
-    u.id AS usuario_id,
-    u.nombre,
-    u.apellido,
-    d.datos
-FROM 
-    usuarios u
-JOIN 
-    datos_adicionales d ON u.id = d.usuarios_id
-FOR JSON AUTO;
+    JSON_VALUE(datos, '$.caracteristicas.equipaje') AS Equipaje,
+    JSON_QUERY(datos, '$.caracteristicas.paradas[0]') AS PrimeraParada
+FROM viajes_datos;
 
-SELECT * FROM datos_adicionales where usuarios_id = 1
--- Agregar un nuevo campo al JSON existente
-UPDATE datos_adicionales
-SET datos = JSON_MODIFY(datos, '$.preferencias.deporte', 'tenis')
-WHERE usuarios_id = 1;
+-- Filtrar registros según una preferencia JSON (Ejemplo: viajes con preferencia de "mate" como bebida)
+SELECT viajes_id
+FROM viajes_datos
+WHERE JSON_VALUE(datos, '$.preferencias.bebida') = 'mate';
 
--- Agregar otro campo en diferentes usuarios
-UPDATE datos_adicionales
-SET datos = JSON_MODIFY(datos, '$.preferencias.libros', 'novelas')
-WHERE usuarios_id = 2;
+-- Tarea: Crear una columna calculada e indexarla para optimizar consultas sobre el JSON
+ALTER TABLE viajes_datos
+ADD bebida_preferida AS JSON_VALUE(datos, '$.preferencias.bebida');
 
-UPDATE datos_adicionales
-SET datos = JSON_MODIFY(datos, '$.preferencias.bebida', 'vino tinto')
-WHERE usuarios_id = 3;
+CREATE INDEX idx_bebida_preferida ON viajes_datos (bebida_preferida);
 
-UPDATE datos_adicionales
-SET datos = JSON_MODIFY(datos, '$.preferencias.música', NULL)
-WHERE usuarios_id = 1;
-
-
-
--- Tarea 4: Realizar operaciones de consultas en datos JSON
--- Consultar un valor específico dentro del JSON
-SELECT JSON_VALUE(datos, '$.preferencias.comida') AS ComidaPreferida
-FROM datos_adicionales
-WHERE usuarios_id = 1;
-
--- Consultar varios valores JSON al mismo tiempo
-SELECT 
-    JSON_VALUE(datos, '$.hobbies[0]') AS PrimerHobby,
-    JSON_VALUE(datos, '$.preferencias.comida') AS ComidaPreferida
-FROM datos_adicionales;
-
--- Filtrar registros en función de un valor JSON
-SELECT usuarios_id
-FROM datos_adicionales
-WHERE JSON_VALUE(datos, '$.preferencias.comida') = 'mexicana';
-
--- Tarea 5: Aproximaciones a la optimización de consultas para estas estructuras
--- Crear una columna calculada e indexarla para optimizar consultas
-ALTER TABLE datos_adicionales
-ADD comida_preferida AS JSON_VALUE(datos, '$.preferencias.comida');
-
-CREATE INDEX idx_comida_preferida ON datos_adicionales (comida_preferida);
-
--- Tarea 6: Eliminar un registro específico de datos adicionales
-DELETE FROM datos_adicionales
-WHERE usuarios_id = 4;
-
--- Tarea 7: Seleccionar todos los registros para revisar la estructura final de datos adicionales
-SELECT * FROM datos_adicionales;
-
+-- Tarea: Seleccionar todos los registros para revisar la estructura final de los datos
+SELECT * FROM viajes_datos;
