@@ -83,43 +83,60 @@ El desarrollo de la plataforma **Viajate** se centró en el diseño y creación 
 
 ## CAPÍTULO IV: DESARROLLO DEL TEMA / PRESENTACIÓN DE RESULTADOS
 
-En este capítulo se detallan los resultados obtenidos a lo largo del desarrollo del backend de **Viajate**, mostrando cómo se implementaron las funcionalidades clave y cómo se estructuró la base de datos.
+### Optimización de Consultas en la Base de Datos
 
-### Diagrama Relacional
-[Haz clic aquí para ver el Diagrama Relacional](https://github.com/Franciscoleiva2/Proyecto-Bases-de-Datos-Grupo2-Comision-3/blob/main/doc/viajate_model.png)
+#### Descripción del Conjunto de Datos
+Se trabajó con la tabla `viajes`, diseñada para almacenar información clave sobre los viajes compartidos en **Viajate**. Las columnas principales incluyen `usuarios_id`, `vehiculo_id`, `origen`, `destino`, `fecha`, `hora`, `precio` y `asientos_disponibles`.
 
-### Diccionario de Datos
-[Haz clic aquí para ver el Diccionario de Datos](https://github.com/Franciscoleiva2/Proyecto-Bases-de-Datos-Grupo2-Comision-3/blob/main/doc/diccionario_datos.pdf)
+#### Carga Masiva de Datos
+Para realizar pruebas de rendimiento y optimización, se realizó una carga masiva de un millón de registros en la tabla `viajes`, con datos generados de manera secuencial y aleatoria. Este proceso permitió obtener un conjunto de datos adecuado para medir la eficiencia de las consultas.
 
-### Temas Desarrollados
+#### Evaluación Inicial de la Consulta sin Índices
+Se realizó una consulta inicial en la tabla `viajes` sin índices, buscando registros entre el 1 de enero y el 31 de marzo de 2024. El plan de ejecución mostró un *Clustered Index Scan*, con un tiempo de respuesta de aproximadamente 0.247 segundos, lo cual sirvió como punto de referencia.
 
-Procedimientos y Funciones Almacenadas en Viajate
-Los procedimientos y funciones almacenadas son elementos clave en Viajate para gestionar de forma eficiente y segura las operaciones de la base de datos, encapsulando la lógica de negocio directamente en el servidor.
+#### Implementación de Índices
 
-Procedimientos Almacenados
-Los procedimientos almacenados agrupan instrucciones SQL que ejecutan operaciones CRUD de manera eficiente y controlada. Algunos ejemplos:
+- **Índice Agrupado en la Columna `fecha`**: Al crear un índice agrupado en la columna `fecha`, el plan de ejecución cambió a un *Clustered Index Seek* y el tiempo de respuesta mejoró a 0.156 segundos. Esto demostró la efectividad de un índice en la optimización de consultas por rango de fechas.
+  
+- **Índice Agrupado con Múltiples Columnas**: Para optimizar aún más, se añadió un índice agrupado en las columnas `fecha`, `origen`, `destino`, `hora`, `precio` y `asientos_disponibles`. Esto permitió reducir el tiempo de respuesta a 0.150 segundos y facilitó el acceso a múltiples columnas en una única consulta.
 
-InsertarUsuario: Valida la unicidad del correo antes de registrar un nuevo usuario, asegurando la integridad de los datos.
-ModificarUsuario: Permite actualizar la información de un usuario tras verificar su existencia, evitando modificaciones no válidas.
-BorrarUsuario: Elimina un usuario y sus datos dependientes, garantizando la consistencia de la base de datos al borrar en cascada.
-Ventajas:
+#### Comparación de Rendimiento
+Al comparar los tiempos de respuesta entre las consultas en tablas con y sin índices, se observó una mejora significativa en el tiempo de ejecución al utilizar índices agrupados, en especial en consultas sobre grandes volúmenes de datos.
 
-Mejoran el rendimiento al ejecutar la lógica en el servidor.
-Aumentan la seguridad al limitar el acceso directo a las tablas.
-Facilitan el mantenimiento al centralizar la lógica de negocio.
-Funciones Almacenadas
-Las funciones almacenadas devuelven valores específicos y son útiles para cálculos en consultas SQL, como:
+#### Impacto en `Viajate`
+Estas optimizaciones en la base de datos resultan fundamentales para **Viajate**, ya que permiten una experiencia de usuario más fluida, con consultas y búsquedas rápidas en una plataforma que maneja grandes volúmenes de información de viajes compartidos.
 
-CalcularEdad: Calcula la edad de un usuario, útil en reportes.
-CantidadReservasUsuario: Cuenta las reservas de un usuario, ideal para estadísticas.
-PrecioPromedioViajesUsuario: Calcula el precio promedio de los viajes de un usuario.
-Ventajas:
+---
 
-Permiten cálculos reutilizables en consultas sin duplicar código.
-Mejoran la eficiencia al ejecutar cálculos directamente en SQL.
-Simplifican filtrados y cálculos personalizados.
-Impacto en Viajate
-La combinación de procedimientos y funciones en Viajate mejora la eficiencia, seguridad y mantenibilidad del sistema, garantizando una gestión de datos robusta y optimizada para consultas y reportes, esenciales en una plataforma de viajes compartidos.
+### Procedimientos y Funciones Almacenadas en `Viajate`
+
+#### Procedimientos Almacenados
+Los procedimientos almacenados en **Viajate** agrupan instrucciones SQL que ejecutan operaciones CRUD (Crear, Leer, Actualizar y Borrar) de manera controlada y eficiente, encapsulando la lógica de negocio en el servidor. A continuación, algunos ejemplos clave:
+
+- **InsertarUsuario**: Valida la unicidad del correo antes de registrar un nuevo usuario, asegurando la integridad de los datos.
+- **ModificarUsuario**: Permite actualizar la información de un usuario tras verificar su existencia, evitando modificaciones no válidas.
+- **BorrarUsuario**: Elimina un usuario y sus datos dependientes, garantizando la consistencia de la base de datos al borrar en cascada.
+
+**Ventajas de los Procedimientos Almacenados**:
+- Mejoran el rendimiento al ejecutar la lógica en el servidor, reduciendo la carga en el cliente.
+- Aumentan la seguridad al limitar el acceso directo a las tablas.
+- Facilitan el mantenimiento al centralizar la lógica de negocio en un solo lugar.
+
+#### Funciones Almacenadas
+Las funciones almacenadas devuelven valores específicos y son útiles para cálculos en consultas SQL, permitiendo realizar operaciones complejas sin duplicar código en varias consultas. Ejemplos de funciones utilizadas en **Viajate** incluyen:
+
+- **CalcularEdad**: Calcula la edad de un usuario, útil en reportes demográficos.
+- **CantidadReservasUsuario**: Cuenta las reservas realizadas por un usuario, ideal para estadísticas de uso.
+- **PrecioPromedioViajesUsuario**: Calcula el precio promedio de los viajes realizados por un usuario.
+
+**Ventajas de las Funciones Almacenadas**:
+- Permiten cálculos reutilizables en consultas SQL, mejorando la eficiencia del código.
+- Ejecución directa en SQL, lo cual optimiza el rendimiento.
+- Simplifican los filtrados y cálculos personalizados en consultas complejas.
+
+#### Impacto en `Viajate`
+La combinación de procedimientos y funciones almacenadas en **Viajate** mejora la eficiencia, seguridad y mantenibilidad del sistema. Estos elementos permiten una gestión de datos robusta, optimizada para consultas y reportes, lo cual es esencial en una plataforma que requiere de operaciones rápidas y seguras para satisfacer las necesidades de los usuarios de viajes compartidos.
+
 ---
 
 ## CAPÍTULO V: CONCLUSIONES
