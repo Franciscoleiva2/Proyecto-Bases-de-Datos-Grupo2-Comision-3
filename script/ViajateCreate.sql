@@ -1,4 +1,6 @@
 -- CREATE DATABASE viajate;
+CREATE DATABASE viajate;
+
 USE viajate;
 GO
 
