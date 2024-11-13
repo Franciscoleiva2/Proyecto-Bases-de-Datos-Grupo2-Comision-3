@@ -174,6 +174,38 @@ Las funciones almacenadas devuelven valores específicos y son útiles para cál
 #### Impacto en `Viajate`
 La combinación de procedimientos y funciones almacenadas en **Viajate** mejora la eficiencia, seguridad y mantenibilidad del sistema. Estos elementos permiten una gestión de datos robusta, optimizada para consultas y reportes, lo cual es esencial en una plataforma que requiere de operaciones rápidas y seguras para satisfacer las necesidades de los usuarios de viajes compartidos.
 
+
+###TEMA: Manejo de tipos de datos JSON en el Proyecto de Gestión de Viajes
+
+¿Qué es JSON?
+JSON (JavaScript Object Notation) es un formato de datos ligero y fácil de leer utilizado para almacenar y transferir datos estructurados. Es muy común en aplicaciones web, ya que permite un intercambio eficiente de información entre el servidor y la interfaz de usuario. JSON organiza los datos en una estructura de clave-valor, lo que facilita su interpretación tanto por humanos como por sistemas de procesamiento automático.
+
+¿Por qué utilizamos JSON en este proyecto?
+En este proyecto de gestión de viajes, JSON permite almacenar información adicional y no estructurada dentro de las tablas de una base de datos SQL Server. Aunque SQL es ideal para datos estructurados, el uso de JSON nos permite manejar datos semiestructurados que pueden variar entre registros, como las características detalladas de un viaje, preferencias de los usuarios, paradas de ruta, y más. Esto nos brinda flexibilidad sin la necesidad de modificar el esquema de la base de datos cada vez que se añade una nueva característica.
+
+JSON en SQL Server
+Aunque JSON no es una estructura de base de datos, SQL Server permite trabajar con datos en formato JSON. Podemos almacenar JSON en columnas de tipo NVARCHAR, ejecutar consultas sobre datos JSON específicos dentro de esas columnas y actualizar partes del JSON almacenado sin afectar el resto de la estructura. En este proyecto:
+
+Los datos JSON se almacenan en una columna dedicada en la tabla viajes_datos.
+
+La información de cada viaje, como paradas intermedias y preferencias de bebida, se guarda en JSON, manteniendo flexibilidad y adaptabilidad.
+
+Mediante el uso de columnas calculadas e índices en SQL Server, optimizamos las consultas sobre propiedades específicas en el JSON, como la preferencia de bebida.
+
+Ventajas de Usar JSON en el Proyecto
+
+Flexibilidad: Permite almacenar información variable de los viajes sin modificar la estructura de la base de datos.
+Compatibilidad con APIs y Frontend: JSON es un formato ideal para comunicarse con aplicaciones web y móviles, que consumen datos desde el backend en este formato.
+Escalabilidad: Podemos añadir nuevas propiedades dentro del JSON sin requerir cambios en las tablas o en la estructura general de la base de datos.
+Optimización en Consultas: Gracias al uso de columnas calculadas y la capacidad de indexar datos JSON específicos en SQL Server, logramos un rendimiento óptimo al consultar información de uso frecuente en el frontend.
+
+Conclusion
+JSON es un formato de intercambio de datos muy popular en el desarrollo web, especialmente útil en proyectos donde los datos pueden variar en estructura.
+Su naturaleza independiente del lenguaje permite el intercambio de datos entre diferentes sistemas, facilitando la comunicación entre el backend y frontend.
+En este proyecto de gestión de viajes, JSON proporciona una solución flexible y escalable para manejar detalles de los viajes, mientras SQL Server se encarga de almacenar y consultar datos de manera estructurada.
+Las capacidades de SQL Server para manejar datos JSON enriquecen la funcionalidad de nuestras aplicaciones, al combinar lo mejor de los datos estructurados y semiestructurados en un solo sistema.
+
+
 ---
 
 ## CAPÍTULO V: CONCLUSIONES
